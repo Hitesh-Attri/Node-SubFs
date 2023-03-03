@@ -1,0 +1,32 @@
+<html>
+<body>
+<button type="button" onclick="loadDoc()">Get Request</button>
+<br/>
+
+<p id="demo"></p>
+
+<script>
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange=function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+};
+  
+
+function loadDoc() {
+//   xhttp.open("GET", "localhost:3000/getData"); // if using through vscode open with live server
+  xhttp.open("GET", "/getData"); // if loading it though node sendFile(__dirname +"/index.html");
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send();
+
+//   xhttp.addEventListener('load',()=>{
+//     let data = xhttp.responseText;
+//     console.log(data,typeof data);
+//   })
+}
+</script>
+
+</body>
+</html>

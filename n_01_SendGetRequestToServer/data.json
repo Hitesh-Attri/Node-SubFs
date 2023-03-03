@@ -1,0 +1,32 @@
+[
+    {
+        "title": "Rat in a Maze Problem",
+        "id": "a49b155a007330b9de",
+        "tags": "matrix,backtracking" 
+    },
+    {
+        "title": "Generate IP Addresses",
+        "id": "a4a0785a007330b9df",
+        "tags":"strings,backtracking,recursion"
+    },
+    {
+        "title": "Activity Selection Problem",
+        "id": "a5e8ca5a007330b",
+        "tags":"arrays,greedy-algorithms"
+    },
+    {
+        "title": "N meetings in one room",
+        "id": "a5ed2b5a007330b",
+        "tags":"arrays,greedy-algorithms"
+    },
+    {
+        "title": "Minimum coins to remove for difference limit",
+        "id": "b1ba2fe17366697c17",
+        "tags":"array,greedy-algorithms"
+    },
+    {
+        "title": "Minimum number of Coins",
+        "id": "b1cd58e1736669714",
+        "tags":"array,greedy-algorithms,dynamic-programming"
+    }
+]

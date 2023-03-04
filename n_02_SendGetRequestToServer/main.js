@@ -8,7 +8,6 @@ var port = 3000;
 //Request Parser 
 app.use(express.json()); //A new body object containing the parsed data is populated on the request object after the middleware (i.e. req.body).
 
-
 app.get('/',(req,res)=>{
     res.sendFile(__dirname +"/index.html");
 });

@@ -1,0 +1,62 @@
+
+
+#main-div{
+    display: flex;
+    justify-content: center;
+    margin-right: 2rem;
+}
+
+#list-div{
+    float: left;
+    margin-left: 2rem;
+    margin-top: 2rem;
+}
+
+#text-input-div{
+    flex:1;
+    float: right;
+    margin-left: 2rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    padding-left: 5rem;
+    flex-shrink: 1;
+}
+
+textarea{
+    flex-shrink: 3;
+    border: none;
+    overflow: auto;
+    outline: none;
+    font-size: 1.5em;
+    padding: 1rem 1rem;
+    box-shadow: 0.35rem 0.5rem 1rem 0.5rem  grey;
+    resize: none;
+}
+
+textarea::placeholder{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+
+.list-div{
+    margin: 1rem 1rem 1rem 0.5rem;
+}
+
+.tasks, .div-btns{
+    display: inline;
+}
+
+.div-btns{
+    float: right;
+}
+
+input.checkBtn {
+    transform : scale(1.4);
+}
+
+/* tried to reverse the added tasks but below lines didnt work */
+/* .list-here{
+    display: flex !important;
+    flex-direction: column-reverse !important;
+} */

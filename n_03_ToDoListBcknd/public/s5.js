@@ -36,11 +36,10 @@ function addTask() {
         rqst.open('GET', "/getData");
         rqst.send();
         rqst.addEventListener('load', () => {
-            console.log("brwsr console.");
-            console.log(typeof rqst.responseText, rqst.responseText, "rspnse");
-            let tasksRetrieved = JSON.parse(rqst.responseText);
-            console.log(tasksRetrieved, typeof tasksRetrieved);
-
+            // console.log("brwsr console.");
+            // console.log(typeof rqst.responseText, rqst.responseText, "rspnse");
+            let tasksRetrieved = JSON.parse(rqst.responseText); // array here
+            // console.log(tasksRetrieved, typeof tasksRetrieved);
 
             var div2 = document.createElement('div');
             div2.className = "list-div";
@@ -53,6 +52,7 @@ function addTask() {
             pTag.id = pTagIdStr;
             pTag.innerText = str;
             div2.appendChild(pTag);
+
             let obj = {
                 T: str,
                 isCheck: 0,
@@ -60,116 +60,147 @@ function addTask() {
             }
 
             tasksRetrieved.push(obj);
-            tasksRetrieved = JSON.stringify(tasksRetrieved);
+            // tasksRetrieved = JSON.stringify(tasksRetrieved);
 
             // POST rqst
             let rqst2 = new XMLHttpRequest();
-            rqst2.open("POST", "/addTask");
+            rqst2.open("POST", "/addData");
             rqst2.setRequestHeader("Content-Type", "application/json");
-            rqst2.send(tasksRetrieved);
-            console.log(typeof tasksRetrieved, tasksRetrieved);
-
+            rqst2.send(JSON.stringify(tasksRetrieved));
+            // console.log(typeof tasksRetrieved, tasksRetrieved);
             rqst2.addEventListener('load', () => {
 
-            });
-            //
-            // return;
-            // localStorage.setItem("tasks",taskArrJSONStr);
+                // return;
+                // localStorage.setItem("tasks",taskArrJSONStr);
 
-            var divBtns = document.createElement('div');
-            divBtns.className = "div-btns";
-            let divBtnsIdStr = `div-btns${Ids}`;
-            divBtns.id = divBtnsIdStr;
-            div2.appendChild(divBtns);
+                var divBtns = document.createElement('div');
+                divBtns.className = "div-btns";
+                let divBtnsIdStr = `div-btns${Ids}`;
+                divBtns.id = divBtnsIdStr;
+                div2.appendChild(divBtns);
 
-            var b1 = document.createElement('button');
-            b1.className = "editBtn";
-            let b1IdStr = `editBtn${Ids}`;
-            b1.id = b1IdStr;
-            b1.addEventListener('click', function () {
-                let editBtnIdStr = this.id;
-                let editBtnIdNum = parseInt(editBtnIdStr.replace("editBtn", ""));
-                editTask(editBtnIdNum);
-            });
+                var b1 = document.createElement('button');
+                b1.className = "editBtn";
+                let b1IdStr = `editBtn${Ids}`;
+                b1.id = b1IdStr;
+                b1.addEventListener('click', function () {
+                    let editBtnIdStr = this.id;
+                    let editBtnIdNum = parseInt(editBtnIdStr.replace("editBtn", ""));
+                    // console.log(editBtnIdNum, "before calling editTask ()")
+                    editTask(editBtnIdNum);
+                });
 
-            var b2 = document.createElement('input');
-            b2.setAttribute("type", "checkbox");
-            b2.className = "checkBtn";
-            let b2IdStr = `checkBtn${Ids}`;
-            b2.id = b2IdStr;
-            b2.addEventListener('change', function () {
-                let checkBtnIdStr = this.id;
-                let checkBtnIdNum = parseInt(checkBtnIdStr.replace("checkBtn", ""));
-                if (this.checked) {
-                    console.log("Checkbox is checked..");
+                var b2 = document.createElement('input');
+                b2.setAttribute("type", "checkbox");
+                b2.className = "checkBtn";
+                let b2IdStr = `checkBtn${Ids}`;
+                b2.id = b2IdStr;
+                b2.addEventListener('change', function () {
+                    let checkBtnIdStr = this.id;
+                    let checkBtnIdNum = parseInt(checkBtnIdStr.replace("checkBtn", ""));
+                    if (this.checked) {
+                        console.log("Checkbox is checked..");
 
-                    lineThroughTrue(checkBtnIdNum);
+                        lineThroughTrue(checkBtnIdNum);
 
-                    tasksRetrieved = JSON.parse(localStorage.getItem('tasks'));
-                    console.log(tasksRetrieved, checkBtnIdNum, "1");
-                    tasksRetrieved[checkBtnIdNum].isCheck = 1;
-                    console.log(tasksRetrieved, "2");
-                    console.log("inside add b2 if listern", this.checked, tasksRetrieved[checkBtnIdNum].isCheck);
-                    let rqst2 = new XMLHttpRequest();
-                    rqst2.open("POST", "/addTask");
-                    rqst2.setRequestHeader("Content-Type", "application/json");
-                    rqst2.send(tasksRetrieved);
-                    console.log(typeof tasksRetrieved, tasksRetrieved);
+                        // tasksRetrieved = JSON.parse(localStorage.getItem('tasks'));
+                        let rqst7 = new XMLHttpRequest();
+                        rqst7.open('GET','getData');
+                        rqst7.send();
 
-                    rqst2.addEventListener('load', () => {
+                        rqst7.addEventListener('load',()=>{
+
+                            
+                            console.log(tasksRetrieved, checkBtnIdNum, "1");
+                            tasksRetrieved[checkBtnIdNum].isCheck = 1;
+                            console.log(tasksRetrieved, "2");
+                            console.log("inside add b2 if listern", this.checked, tasksRetrieved[checkBtnIdNum].isCheck);
+                            let rqst2 = new XMLHttpRequest();
+                            rqst2.open("POST", "/addData");
+                            rqst2.setRequestHeader("Content-Type", "application/json");
+                            rqst2.send(JSON.stringify(tasksRetrieved));
+                            console.log(typeof tasksRetrieved, tasksRetrieved);
+                            
+                            rqst2.addEventListener('load', () => {
+                                
+                            });
+                        }); 
+                        // localStorage.setItem("tasks",JSON.stringify(tasksRetrieved));
+                    } else {
+                        console.log("Checkbox is not checked..");
+                        lineThroughFalse(checkBtnIdNum);
+
+                        tasksRetrieved[checkBtnIdNum].isCheck = 0;
+                        // localStorage.setItem("tasks", JSON.stringify(tasksRetrieved));
+                    }
+
+                    let rqst8 = new XMLHttpRequest();
+                    rqst8.open('POST','addData');
+                    rqst8.setRequestHeader('Content-Type','application/json');
+                    rqst8.send(JSON.stringify(tasksRetrieved));
+                    rqst8.addEventListener('load',()=>{
+                        console.log("res came back");
+                    });
+                });
+
+                var b3 = document.createElement('button');
+                b3.className = "deleteBtn";
+                let b3IdStr = `deleteBtn${Ids}`;
+                b3.id = b3IdStr;
+
+                // let newVar = localStorage.getItem('tasks');
+                // newVar = JSON.parse(newVar);
+                
+
+                b3.addEventListener('click', function () {
+                    let dltBtnIdStr = this.id;
+                    let dltBtnIdNum = parseInt(dltBtnIdStr.replace("deleteBtn", ""));
+
+                    // let arrS = localStorage.getItem("tasks");
+                    // arrS = JSON.parse(arrS);
+
+                    let rqst9 = new XMLHttpRequest();
+                    rqst9.open('GET','getData');
+                    rqst9.send();
+                    rqst9.addEventListener('load',()=>{
+                        let arrS = JSON.parse(rqst9.responseText);
+                        
+                        console.log(arrS, typeof arrS);
+                        
+                        console.log(dltBtnIdNum, typeof arrS, arrS);
+                        
+                        arrS.splice(findIndex(`tasks${dltBtnIdNum}`, arrS), 1);
+                        
+                        // arrS = JSON.stringify(arrS);
+                        // localStorage.setItem('tasks', arrS);
+
+                        let rqst10 = new XMLHttpRequest();
+                        rqst10.open('POST','addData');
+                        rqst10.setRequestHeader('Content-Type','application/json');
+                        rqst10.send(JSON.stringify(arrS));
+                        rqst10.addEventListener('load',()=>{
+                            console.log("res came back");
+                        });
 
                     });
 
-                    // localStorage.setItem("tasks",JSON.stringify(tasksRetrieved));
-                } else {
-                    console.log("Checkbox is not checked..");
-                    lineThroughFalse(checkBtnIdNum);
+                    deleteTask(dltBtnIdNum);
+                });
 
-                    tasksRetrieved[checkBtnIdNum].isCheck = 0;
-                    localStorage.setItem("tasks", JSON.stringify(tasksRetrieved));
-                }
+                b1.innerHTML = "&#9998;";
+                b3.innerHTML = "&#10008;";
+
+                divBtns.appendChild(b1);
+                divBtns.appendChild(b2);
+                divBtns.appendChild(b3);
+                listDiv.appendChild(div2);
+                Ids++;
+
+                eraseText();
+
+                // listDiv.innerHTML = "";
+                // loadData();
             });
-
-            var b3 = document.createElement('button');
-            b3.className = "deleteBtn";
-            let b3IdStr = `deleteBtn${Ids}`;
-            b3.id = b3IdStr;
-
-            let newVar = localStorage.getItem('tasks');
-            newVar = JSON.parse(newVar);
-
-            b3.addEventListener('click', function () {
-                let dltBtnIdStr = this.id;
-                let dltBtnIdNum = parseInt(dltBtnIdStr.replace("deleteBtn", ""));
-
-                let arrS = localStorage.getItem("tasks");
-                arrS = JSON.parse(arrS);
-
-                console.log(arrS, typeof arrS);
-
-                console.log(dltBtnIdNum, typeof arrS, arrS);
-
-                arrS.splice(findIndex(`tasks${dltBtnIdNum}`, arrS), 1);
-
-                arrS = JSON.stringify(arrS);
-                localStorage.setItem('tasks', arrS);
-
-                deleteTask(dltBtnIdNum);
-            });
-
-            b1.innerHTML = "&#9998;";
-            b3.innerHTML = "&#10008;";
-
-            divBtns.appendChild(b1);
-            divBtns.appendChild(b2);
-            divBtns.appendChild(b3);
-            listDiv.appendChild(div2);
-            Ids++;
-
-            eraseText();
-
-            listDiv.innerHTML = "";
-            loadData();
         });
     }
 }
@@ -193,7 +224,7 @@ function loadData() {
     rqst.addEventListener('load', () => {
         // console.log(rqst.responseText, typeof rqst.responseText);
         let tasksRetrieved = JSON.parse(rqst.responseText);
-        console.log(typeof tasksRetrieved, tasksRetrieved,"onload first");
+        console.log(typeof tasksRetrieved, tasksRetrieved, "onload first");
         // return;
         if (tasksRetrieved.length != 0) {
 
@@ -230,160 +261,172 @@ function loadData() {
                 div2.appendChild(divBtns);
 
                 // arr = JSON.stringify(arr);
-                
+
                 // localStorage.setItem('tasks',arr);
-                
+
                 let rqst1 = new XMLHttpRequest();
-                rqst1.open("POST","/addTask");
+                rqst1.open("POST", "/addData");
                 rqst1.setRequestHeader("Content-Type", "application/json");
                 rqst1.send(JSON.stringify(tasksRetrieved));
                 rqst1.addEventListener('load', () => {
-                    
+
                 });
 
-                    var b1 = document.createElement('button');
-                    b1.className = "editBtn";
-                    // let b1IdStr = `editBtn${Ids}`;
-                    let b1IdStr = `editBtn${i}`;
-                    b1.id = b1IdStr;
-                    b1.addEventListener('click', function () {
-                        let editBtnIdStr = this.id;
-                        let editBtnIdNum = parseInt(editBtnIdStr.replace("editBtn", ""));
-                        editTask(editBtnIdNum);
-                    });
+                var b1 = document.createElement('button');
+                b1.className = "editBtn";
+                // let b1IdStr = `editBtn${Ids}`;
+                let b1IdStr = `editBtn${i}`;
+                b1.id = b1IdStr;
+                b1.addEventListener('click', function () {
+                    let editBtnIdStr = this.id;
+                    let editBtnIdNum = parseInt(editBtnIdStr.replace("editBtn", ""));
+                    editTask(editBtnIdNum);
+                });
 
-                    var b2 = document.createElement('input');
-                    b2.setAttribute("type", "checkbox");
-                    b2.className = "checkBtn";
-                    // let b2IdStr = `checkBtn${Ids}`;
-                    let b2IdStr = `checkBtn${i}`;
-                    b2.id = b2IdStr;
-                    if (tasksRetrieved[i].isCheck == 1) {
-                        b2.checked = true;
+                var b2 = document.createElement('input');
+                b2.setAttribute("type", "checkbox");
+                b2.className = "checkBtn";
+                // let b2IdStr = `checkBtn${Ids}`;
+                let b2IdStr = `checkBtn${i}`;
+                b2.id = b2IdStr;
+                if (tasksRetrieved[i].isCheck == 1) {
+                    b2.checked = true;
+                }
+                b2.addEventListener('change', function () {
+                    let checkBtnIdStr = this.id;
+                    let checkBtnIdNum = parseInt(checkBtnIdStr.replace("checkBtn", ""));
+                    console.log(typeof checkBtnIdNum, checkBtnIdNum);
+
+                    if (this.checked) {
+                        console.log("Checkbox is checked..");
+                        lineThroughTrue(checkBtnIdNum);
+
+                        let rqst4 = new XMLHttpRequest();
+                        rqst4.open("GET", "/getData");
+                        rqst4.addEventListener("load", () => {
+                            tasksRetrieved = JSON.parse(rqst4.responseText);
+                            let checkBtnIdOnListen = this.id;
+                            checkBtnIdOnListen = parseInt(checkBtnIdStr.replace("checkBtn", ""));
+                            tasksRetrieved[checkBtnIdOnListen].isCheck = 0;
+
+                            // tasksRetrieved = JSON.stringify(tasksRetrieved);
+                            // localStorage.setItem("tasks",taskArrJSONStr);
+                            let rqst6 = new XMLHttpRequest();
+                            rqst6.setRequestHeader("Content-Type", "application/json");
+                            rqst6.open("POST", "/addData");
+                            rqst6.setRequestHeader('Content-Type',"application/json");
+                            rqst6.send(JSON.stringify(tasksRetrieved));
+                            rqst6.addEventListener('load', () => {
+
+                                console.log("checkBtnIdNum > ", checkBtnIdOnListen);
+                            });
+                            console.log("inside b2 if listern", this.checked, tasksRetrieved[checkBtnIdOnListen].isCheck);
+                        });
+                        // tasksRetrievedArr = localStorage.getItem('tasks');
+                        // tasksRetrievedArr = JSON.parse(tasksRetrievedArr);
+                        // console.log("inside b2 if listern", this.checked, tasksRetrieved[i].isCheck);
                     }
-                    b2.addEventListener('change', function () {
-                        let checkBtnIdStr = this.id;
-                        let checkBtnIdNum = parseInt(checkBtnIdStr.replace("checkBtn", ""));
-                        console.log(typeof checkBtnIdNum, checkBtnIdNum);
+                    else {
+                        console.log("Checkbox is not checked..");
+                        lineThroughFalse(checkBtnIdNum);
+                        let rqst4 = new XMLHttpRequest();
+                        rqst4.open("GET", "/getData");
+                        rqst4.addEventListener("load", () => {
+                            tasksRetrieved = JSON.parse(rqst4.responseText);
+                            tasksRetrieved[i].isCheck = 0;
 
-                        if (this.checked) {
-                            console.log("Checkbox is checked..");
-                            lineThroughTrue(checkBtnIdNum);
+                            let tasksRetrieved = JSON.stringify(tasksRetrieved);
+                            // localStorage.setItem("tasks",taskArrJSONStr);
+                            let rqst6 = new XMLHttpRequest();
+                            rqst6.setRequestHeader("Content-Type", "application/json");
+                            rqst6.open("POST", "/addData");
+                            rqst6.setRequestHeader('Content-Type',"application/json");
+                            rqst6.send(tasksRetrieved);
+                            rqst6.addEventListener('load', () => {
 
-                            let rqst4 = new XMLHttpRequest();
-                            rqst4.open("GET", "/getData");
-                            rqst4.addEventListener("load", () => {
-                                tasksRetrieved = JSON.parse(rqst4.responseText);
-                                tasksRetrieved[i].isCheck = 0;
-
-                                let tasksRetrieved = JSON.stringify(tasksRetrieved);
-                                // localStorage.setItem("tasks",taskArrJSONStr);
-                                let rqst6 = new XMLHttpRequest();
-                                rqst6.setRequestHeader("Content-Type", "application/json");
-                                rqst6.open("POST", "/addData");
-                                rqst6.send(tasksRetrieved);
-                                rqst6.addEventListener('load', () => {
-
-                                    console.log('i :>> ', i, "checkBtnIdNum > ", checkBtnIdNum);
-                                });
-                                console.log("inside b2 if listern", this.checked, tasksRetrieved[i].isCheck);
+                                console.log('i :>> ', i, "checkBtnIdNum > ", checkBtnIdNum);
                             });
-                            // tasksRetrievedArr = localStorage.getItem('tasks');
-                            // tasksRetrievedArr = JSON.parse(tasksRetrievedArr);
-                            // console.log("inside b2 if listern", this.checked, tasksRetrieved[i].isCheck);
-                        }
-                        else {
-                            console.log("Checkbox is not checked..");
-                            lineThroughFalse(checkBtnIdNum);
-                            let rqst4 = new XMLHttpRequest();
-                            rqst4.open("GET", "/getData");
-                            rqst4.addEventListener("load", () => {
-                                tasksRetrieved = JSON.parse(rqst4.responseText);
-                                tasksRetrieved[i].isCheck = 0;
+                            console.log("inside b2 if listern", this.checked, tasksRetrieved[i].isCheck);
+                        });
+                        // tasksRetrievedArr = localStorage.getItem('tasks');
+                        // tasksRetrievedArr = JSON.parse(tasksRetrievedArr);
+                        // console.log("inside b2 if listern", this.checked, tasksRetrieved[i].isCheck);
+                    }
 
-                                let tasksRetrieved = JSON.stringify(tasksRetrieved);
-                                // localStorage.setItem("tasks",taskArrJSONStr);
-                                let rqst6 = new XMLHttpRequest();
-                                rqst6.setRequestHeader("Content-Type", "application/json");
-                                rqst6.open("POST", "/addData");
-                                rqst6.send(tasksRetrieved);
-                                rqst6.addEventListener('load', () => {
+                    // let tasksRetrieved = JSON.stringify(tasksRetrieved);
+                    // // localStorage.setItem("tasks",taskArrJSONStr);
+                    // let rqst6 = new XMLHttpRequest();
+                    // rqst6.setRequestHeader("Content-Type", "application/json");
+                    // rqst6.open("POST", "/addData");
+                    // rqst6.send(tasksRetrieved);
+                    // rqst6.addEventListener('load', () => {
 
-                                    console.log('i :>> ', i, "checkBtnIdNum > ", checkBtnIdNum);
-                                });
-                                console.log("inside b2 if listern", this.checked, tasksRetrieved[i].isCheck);
-                            });
-                            // tasksRetrievedArr = localStorage.getItem('tasks');
-                            // tasksRetrievedArr = JSON.parse(tasksRetrievedArr);
-                            // console.log("inside b2 if listern", this.checked, tasksRetrieved[i].isCheck);
-                        }
+                    //     console.log('i :>> ', i, "checkBtnIdNum > ", checkBtnIdNum);
+                    // });
 
-                        // let tasksRetrieved = JSON.stringify(tasksRetrieved);
-                        // // localStorage.setItem("tasks",taskArrJSONStr);
-                        // let rqst6 = new XMLHttpRequest();
-                        // rqst6.setRequestHeader("Content-Type", "application/json");
-                        // rqst6.open("POST", "/addData");
-                        // rqst6.send(tasksRetrieved);
-                        // rqst6.addEventListener('load', () => {
+                });
 
-                        //     console.log('i :>> ', i, "checkBtnIdNum > ", checkBtnIdNum);
-                        // });
+                // console.log(newVar, typeof newVar, "< inside load function"," i>",i);
 
-                    });
+                var b3 = document.createElement('button');
+                b3.className = "deleteBtn";
+                let b3IdStr = `deleteBtn${Ids}`;
+                b3.id = b3IdStr;
+                b3.addEventListener('click', function () {
+                    let dltBtnIdStr = this.id;
+                    console.log("on load dlt btn. idstr>", dltBtnIdStr);
+                    let dltBtnIdNum = parseInt(dltBtnIdStr.replace("deleteBtn", ""));
 
-                    // console.log(newVar, typeof newVar, "< inside load function"," i>",i);
+                    // let arrS = localStorage.getItem("tasks");
+                    // arrS = JSON.parse(arrS);
 
-                    var b3 = document.createElement('button');
-                    b3.className = "deleteBtn";
-                    let b3IdStr = `deleteBtn${Ids}`;
-                    b3.id = b3IdStr;
-                    b3.addEventListener('click', function () {
-                        let dltBtnIdStr = this.id;
-                        console.log("on load dlt btn. idstr>", dltBtnIdStr);
-                        let dltBtnIdNum = parseInt(dltBtnIdStr.replace("deleteBtn", ""));
+                    let rqst5 = new XMLHttpRequest();
+                    rqst5.open("GET", "/getData");
+                    rqst5.addEventListener("load", () => {
+                        tasksRetrieved = JSON.parse(rqst5.responseText);
 
-                        // let arrS = localStorage.getItem("tasks");
-                        // arrS = JSON.parse(arrS);
+                        let pTagOther = document.getElementById(`tasks${dltBtnIdNum}`)
+                        console.log(pTagOther.innerText);
+                        tasksRetrieved.splice(findIndex(`tasks${dltBtnIdNum}`, tasksRetrieved), 1);
+                        console.log(findIndex(pTagOther.innerText, tasksRetrieved, "< inside onload"));
+                        console.log(pTagOther.innerText, typeof tasksRetrieved);
 
-                        let rqst5 = new XMLHttpRequest();
-                        rqst5.open("GET", "/getData");
-                        rqst5.addEventListener("load", () => {
-                            tasksRetrieved = JSON.parse(rqst5.responseText);
-
-                            let pTagOther = document.getElementById(`tasks${dltBtnIdNum}`)
-                            console.log(pTagOther.innerText);
-                            arrS.splice(findIndex(`tasks${dltBtnIdNum}`, tasksRetrieved), 1);
-                            console.log(findIndex(pTagOther.innerText, tasksRetrieved, "< inside onload"));
-                            console.log(pTagOther.innerText, typeof tasksRetrieved);
-
-                            let postRqst2 = new XMLHttpRequest();
-                            postRqst2.open("POST","/addTask");
-                            postRqst2.setRequestHeader("Content-Type","application/json");
-                            postRqst2.send(JSON.stringify(tasksRetrieved));
-                            postRqst2.addEventListener('load',()=>{
-
-                                deleteTask(dltBtnIdNum);
-                            });
-
+                        let postRqst2 = new XMLHttpRequest();
+                        postRqst2.open("POST", "/addData");
+                        postRqst2.setRequestHeader("Content-Type", "application/json");
+                        postRqst2.send(JSON.stringify(tasksRetrieved));
+                        postRqst2.addEventListener('load', () => {
+                            console.log("res cam back, 399");
+                            deleteTask(dltBtnIdNum);
                         });
 
-                        // arrS = JSON.stringify(arrS);
-                        // localStorage.setItem('tasks',arrS);
-
-
-                        // deleteTask(dltBtnIdNum);
                     });
 
-                    b1.innerHTML = "&#9998;";
-                    b3.innerHTML = "&#10008;";
+                    // arrS = JSON.stringify(arrS);
+                    // localStorage.setItem('tasks',arrS);
 
-                    divBtns.appendChild(b1);
-                    divBtns.appendChild(b2);
-                    divBtns.appendChild(b3);
-                    
-                    Ids++;
+
+                    // deleteTask(dltBtnIdNum);
+                });
+
+                b1.innerHTML = "&#9998;";
+                b3.innerHTML = "&#10008;";
+
+                divBtns.appendChild(b1);
+                divBtns.appendChild(b2);
+                divBtns.appendChild(b3);
+
+                Ids++;
 
             }
+            let postRqst3 = new XMLHttpRequest();
+            postRqst3.open('POST', '/addData');
+            postRqst3.setRequestHeader('Content-Type', "application/json");
+            console.log(typeof tasksRetrieved, tasksRetrieved, " end of load data function");
+            postRqst3.send(JSON.stringify(tasksRetrieved));
+            postRqst3.addEventListener('load', () => {
+                console.log('post respnse');
+            });
 
         } // if
 
@@ -405,6 +448,7 @@ function lineThroughFalse(idNum) {
 }
 
 function deleteTask(idNum) {
+    console.log(idNum);
     let taskDivIdStr = `list-div${idNum}`;
     let taskDiv = document.getElementById(taskDivIdStr);
 
@@ -418,32 +462,33 @@ function editTask(idNum) {
     let pIdStr = `tasks${idNum}`;
 
     let rqst = new XMLHttpRequest();
-    rqst.open('GET','getData');
+    rqst.open('GET', 'getData');
     rqst.send();
-    rqst.addEventListener('load',()=>{
+    rqst.addEventListener('load', () => {
 
         // let arr = localStorage.getItem('tasks');
         let arr = JSON.parse(rqst.responseText);
-        console.log(arr,typeof arr,"inside edit task");
+        console.log(arr, typeof arr, "inside edit task");
         // arr = JSON.parse(arr);
-        
+
         let index = findIndex(pIdStr, arr);
         // console.log(index);
         let pTag = document.getElementById(pIdStr);
         let newTaskStr = prompt("Edit your task > ", pTag.innerText);
         newTaskStr = newTaskStr.trim();
-        
+
         if (newTaskStr != "") {
             pTag.innerHTML = newTaskStr;
             arr[index].T = newTaskStr;
         } else {
             alert("Task empty!");
         }
-
+        console.log(arr,"line 484",typeof arr);
         let postRqst = new XMLHttpRequest();
-        postRqst.open("POST","/addTask");
-        postRqst.send(JSON.stringify(postRqst));
-        postRqst.addEventListener('load',()=>{
+        postRqst.open("POST", "/addData");
+        postRqst.setRequestHeader('Content-Type',"application/json");
+        postRqst.send(JSON.stringify(arr));
+        postRqst.addEventListener('load', () => {
             console.log("data updated. res came back.")
         });
 
@@ -451,7 +496,7 @@ function editTask(idNum) {
         // localStorage.setItem('tasks', arr);
     });
 }
-    
+
 function findIndex(taskIdStr, newVar) {
     for (let i = 0; i < newVar.length; i++) {
         if (newVar[i].id == taskIdStr) return i;

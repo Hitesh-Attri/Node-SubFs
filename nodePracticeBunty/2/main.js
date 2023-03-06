@@ -23,13 +23,13 @@ app.post('/addData',(req,res)=>{
             theFile = JSON.parse(data);
             console.log(typeof data, data);
         }
-        theFile.push(req.body);
+        // theFile.push(req.body);
 
-        fs.writeFile("./data.txt",JSON.stringify(theFile),(err)=>{
+        fs.writeFile("./data.txt",JSON.stringify(req.body),(err)=>{
             if(!err) res.end();
             else res.end("error occured");
         });
-    })
+    });
 });
 
 app.get('/getData',(req,res)=>{
@@ -41,6 +41,7 @@ app.get('/getData',(req,res)=>{
             theFile = JSON.parse(data);
             console.log(typeof data,data, "after parse,get data main js");
         }
+        console.log(theFile, typeof theFile,'node get')
         res.json(theFile);
     });
 });

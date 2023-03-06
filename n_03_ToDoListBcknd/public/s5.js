@@ -146,31 +146,32 @@ function addTask() {
                     // arrS = JSON.parse(arrS);
 
                     let rqst9 = new XMLHttpRequest();
-                    rqst9.open('GET','getData');
+                    rqst9.open('GET','/getData');
                     rqst9.send();
                     rqst9.addEventListener('load',()=>{
                         let arrS = JSON.parse(rqst9.responseText);
                         
-                        console.log(arrS, typeof arrS);
+                        // console.log(arrS, typeof arrS);
                         
-                        console.log(dltBtnIdNum, typeof arrS, arrS);
+                        console.log(dltBtnIdNum, typeof arrS, arrS,"156");
                         
                         arrS.splice(findIndex(`tasks${dltBtnIdNum}`, arrS), 1);
                         
                         // arrS = JSON.stringify(arrS);
                         // localStorage.setItem('tasks', arrS);
+                        
 
                         let rqst10 = new XMLHttpRequest();
-                        rqst10.open('POST','addData');
+                        rqst10.open('POST','/addData');
                         rqst10.setRequestHeader('Content-Type','application/json');
                         rqst10.send(JSON.stringify(arrS));
                         rqst10.addEventListener('load',()=>{
                             console.log("res came back");
+                            deleteTask(dltBtnIdNum);
                         });
 
                     });
 
-                    deleteTask(dltBtnIdNum);
                 });
 
                 b1.innerHTML = "&#9998;";
@@ -366,6 +367,7 @@ function loadData() {
 
                     let rqst5 = new XMLHttpRequest();
                     rqst5.open("GET", "/getData");
+                    rqst5.send();
                     rqst5.addEventListener("load", () => {
                         tasksRetrieved = JSON.parse(rqst5.responseText);
 

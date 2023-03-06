@@ -2,14 +2,6 @@ let listDiv = document.getElementById('list-here');
 let area = document.getElementById("input-box");
 let tasksRetrieved;
 
-// if(JSON.parse(localStorage.getItem('tasks'))==null){
-//     tasksRetrieved=[];
-//     localStorage.setItem('tasks',JSON.stringify(tasksRetrieved));
-// }
-// else{
-//     tasksRetrieved=JSON.parse(localStorage.getItem('tasks'));
-// }
-
 let Ids = 0;
 
 function eraseText() {
@@ -30,14 +22,11 @@ function addTask() {
     if (str.length == 0) {
         alert("Task can't be empty!")
     } else {
-        // let tasksRetrieved = localStorage.getItem('tasks');
-        // let tasksRetrievedArr = JSON.parse(tasksRetrieved);
+
         let rqst = new XMLHttpRequest();
         rqst.open('GET', "/getData");
         rqst.send();
         rqst.addEventListener('load', () => {
-            // console.log("brwsr console.");
-            // console.log(typeof rqst.responseText, rqst.responseText, "rspnse");
             let tasksRetrieved = JSON.parse(rqst.responseText); // array here
             // console.log(tasksRetrieved, typeof tasksRetrieved);
 
@@ -69,9 +58,6 @@ function addTask() {
             rqst2.send(JSON.stringify(tasksRetrieved));
             // console.log(typeof tasksRetrieved, tasksRetrieved);
             rqst2.addEventListener('load', () => {
-
-                // return;
-                // localStorage.setItem("tasks",taskArrJSONStr);
 
                 var divBtns = document.createElement('div');
                 divBtns.className = "div-btns";
@@ -105,24 +91,24 @@ function addTask() {
 
                         // tasksRetrieved = JSON.parse(localStorage.getItem('tasks'));
                         let rqst7 = new XMLHttpRequest();
-                        rqst7.open('GET','getData');
+                        rqst7.open('GET','/getData');
                         rqst7.send();
 
                         rqst7.addEventListener('load',()=>{
-
                             
                             console.log(tasksRetrieved, checkBtnIdNum, "1");
                             tasksRetrieved[checkBtnIdNum].isCheck = 1;
                             console.log(tasksRetrieved, "2");
                             console.log("inside add b2 if listern", this.checked, tasksRetrieved[checkBtnIdNum].isCheck);
-                            let rqst2 = new XMLHttpRequest();
-                            rqst2.open("POST", "/addData");
-                            rqst2.setRequestHeader("Content-Type", "application/json");
-                            rqst2.send(JSON.stringify(tasksRetrieved));
+
+                            let rqst21 = new XMLHttpRequest();
+                            rqst21.open("POST", "/addData");
+                            rqst21.setRequestHeader("Content-Type", "application/json");
+                            rqst21.send(JSON.stringify(tasksRetrieved));
                             console.log(typeof tasksRetrieved, tasksRetrieved);
                             
-                            rqst2.addEventListener('load', () => {
-                                
+                            rqst21.addEventListener('load', () => {
+                                console.log("response came 111");
                             });
                         }); 
                         // localStorage.setItem("tasks",JSON.stringify(tasksRetrieved));
@@ -303,16 +289,17 @@ function loadData() {
 
                         let rqst4 = new XMLHttpRequest();
                         rqst4.open("GET", "/getData");
+                        rqst4.send();
                         rqst4.addEventListener("load", () => {
                             tasksRetrieved = JSON.parse(rqst4.responseText);
                             let checkBtnIdOnListen = this.id;
                             checkBtnIdOnListen = parseInt(checkBtnIdStr.replace("checkBtn", ""));
-                            tasksRetrieved[checkBtnIdOnListen].isCheck = 0;
+                            tasksRetrieved[checkBtnIdOnListen].isCheck = 1;
 
                             // tasksRetrieved = JSON.stringify(tasksRetrieved);
                             // localStorage.setItem("tasks",taskArrJSONStr);
                             let rqst6 = new XMLHttpRequest();
-                            rqst6.setRequestHeader("Content-Type", "application/json");
+                            // rqst6.setRequestHeader("Content-Type", "application/json");
                             rqst6.open("POST", "/addData");
                             rqst6.setRequestHeader('Content-Type',"application/json");
                             rqst6.send(JSON.stringify(tasksRetrieved));
@@ -329,19 +316,26 @@ function loadData() {
                     else {
                         console.log("Checkbox is not checked..");
                         lineThroughFalse(checkBtnIdNum);
-                        let rqst4 = new XMLHttpRequest();
-                        rqst4.open("GET", "/getData");
-                        rqst4.addEventListener("load", () => {
-                            tasksRetrieved = JSON.parse(rqst4.responseText);
-                            tasksRetrieved[i].isCheck = 0;
+                        let rqst41 = new XMLHttpRequest();
+                        rqst41.open("GET", "/getData");
+                        rqst41.send();
+                        rqst41.addEventListener("load", () => {
+                            tasksRetrieved = JSON.parse(rqst41.responseText);
+                            console.log(tasksRetrieved, typeof tasksRetrieved,"324");
+                            // tasksRetrieved[i].isCheck = 1;
+                            let checkBtnIdOnListen = this.id;
+                            checkBtnIdOnListen = parseInt(checkBtnIdStr.replace("checkBtn", ""));
+                            tasksRetrieved[checkBtnIdOnListen].isCheck = 0;
 
-                            let tasksRetrieved = JSON.stringify(tasksRetrieved);
+                            console.log(tasksRetrieved, typeof tasksRetrieved,"330");
+
+                            // let tasksRetrieved = JSON.stringify(tasksRetrieved);
                             // localStorage.setItem("tasks",taskArrJSONStr);
                             let rqst6 = new XMLHttpRequest();
-                            rqst6.setRequestHeader("Content-Type", "application/json");
                             rqst6.open("POST", "/addData");
+                            // rqst6.setRequestHeader("Content-Type", "application/json");
                             rqst6.setRequestHeader('Content-Type',"application/json");
-                            rqst6.send(tasksRetrieved);
+                            rqst6.send(JSON.stringify(tasksRetrieved));
                             rqst6.addEventListener('load', () => {
 
                                 console.log('i :>> ', i, "checkBtnIdNum > ", checkBtnIdNum);
@@ -353,17 +347,7 @@ function loadData() {
                         // console.log("inside b2 if listern", this.checked, tasksRetrieved[i].isCheck);
                     }
 
-                    // let tasksRetrieved = JSON.stringify(tasksRetrieved);
-                    // // localStorage.setItem("tasks",taskArrJSONStr);
-                    // let rqst6 = new XMLHttpRequest();
-                    // rqst6.setRequestHeader("Content-Type", "application/json");
-                    // rqst6.open("POST", "/addData");
-                    // rqst6.send(tasksRetrieved);
-                    // rqst6.addEventListener('load', () => {
-
-                    //     console.log('i :>> ', i, "checkBtnIdNum > ", checkBtnIdNum);
-                    // });
-
+                
                 });
 
                 // console.log(newVar, typeof newVar, "< inside load function"," i>",i);
@@ -428,9 +412,8 @@ function loadData() {
                 console.log('post respnse');
             });
 
-        } // if
-
-    }); // first on load
+        } 
+    }); 
 }
 
 loadData();

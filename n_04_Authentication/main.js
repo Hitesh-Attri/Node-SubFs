@@ -1,5 +1,7 @@
+const { json } = require('express');
 let express = require('express');
 const session = require('express-session');
+let fs = require('fs');
 let app = express();
 let port = 4000;
 
@@ -37,16 +39,59 @@ app.route('/login').get((req,res)=>{
     console.log(req.body);
 
     // match username from the db or here fromt the file
-
-    req.session.is_logged_in = true;
-    res.redirect("/");
-
+    let currUser = req.body;
+    fs.readFile(__dirname +'/data.txt','utf-8',(err,data)=>{
+        let theFile;
+        let flag = false;
+        if(data.length === 0){
+            theFile = [];
+        }
+        else{
+            theFile = JSON.parse(data);
+        }
+        for(let i = 0; i < theFile.length;i++){
+            if(theFile[i].username === currUser.username && theFile[i].password === currUser.password){
+                flag = true;
+                req.session.is_logged_in = true;
+                res.redirect("/");
+            }
+        }
+        if(!flag){
+            console.log("user doesnt exit");
+            res.redirect('/createAcc');
+        }
+    })
     // res.sendFile(__dirname + "/public/home/index.html");
 })
 
-app.get('/signup',(req,res)=>{
+app.route('/signup').get((req,res)=>{
     res.sendFile(__dirname + '/public/signup/index.html');
 })
+.post((req,res)=>{
+    console.log(req.body, typeof req.body,"50");
+    let theFile;
+    fs.readFile(__dirname+'/data.txt','utf-8',(err,data)=>{
+        if(data.length === 0) theFile = [];
+        else{
+            theFile = JSON.parse(data);
+        }
+        theFile.push(req.body);
+        fs.writeFile(__dirname + "/data.txt",JSON.stringify(theFile),(err)=>{
+            console.log("written successfully");
+        })
+    })
+    
+    res.redirect('/');
+})
+
+app.get('/createAcc',(req,res)=>{
+    res.redirect('/signup');
+})
+
+app.get('/logout',(req,res)=>{
+    req.session.destroy();
+    res.redirect('/');
+});
 
 // app.get('*',(req,res)=>{
 //     // console.log("this");

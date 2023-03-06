@@ -92,8 +92,8 @@ app.post('/addData',(req,res)=>{
         // fs.writeFile("./data.txt",JSON.stringify(theFile),(err)=>{
             // console.log(__dirname,"56");
         fs.writeFile(__dirname + "/data.txt",JSON.stringify(req.body),(err)=>{
-            console.log(req.body, typeof req.body)
-;            console.log("here2")
+            console.log(req.body, typeof req.body);
+            console.log("here2")
             if(!err) res.end();
             else res.end("error occured");
         });

@@ -32,7 +32,12 @@ app.get('/home',(req,res)=>{
 app.get('/myAcc',(req,res)=>{
     if(req.session.is_logged_in){
         // res.sendFile(__dirname + '/public/myAcc/index.html');
-        res.render('myAcc/index',{ username: req.session.username, email:req.session.email});
+        let theFile;
+        fs.readFile(__dirname+'/data.json','utf-8',(err,data)=>{
+            if(data.length === 0) theFile =[]
+            else theFile = JSON.parse(data);
+            res.render('myAcc/index',{ username: req.session.username, email:req.session.email,theFile:theFile});
+        });
         // res.render('index');
     }else{
         res.redirect('/login');

@@ -10,8 +10,8 @@ app.get('/',(req,res)=>{
     res.sendFile(__dirname +"/public/index.html");
 });
 
-app.get('/s5.js',(req,res)=>{
-    res.sendFile(__dirname +"/public/s5.js");
+app.get('/s5_2.js',(req,res)=>{
+    res.sendFile(__dirname +"/public/s5_2.js");
 });
 
 app.get('/style.css',(req,res)=>{
@@ -94,6 +94,31 @@ app.post('/addData',(req,res)=>{
         fs.writeFile(__dirname + "/data.txt",JSON.stringify(req.body),(err)=>{
             console.log(req.body, typeof req.body);
             console.log("here2")
+            if(!err) res.end();
+            else res.end("error occured");
+        });
+    });
+});
+
+app.post('/pushObj',(req,res)=>{
+    // console.log("here")
+    fs.readFile(__dirname+"/data.txt",'utf-8',(err,data)=>{
+        let theFile;
+        if(data.length === 0) theFile = [];
+        else{
+            // console.log("here3");
+            // console.log(typeof data, data);
+            theFile = JSON.parse(data);
+            // console.log(typeof data, data);
+            // console.log(theFile,typeof theFile);
+        }
+        theFile.push(req.body);
+        console.log(req.body, typeof req.body);
+        // fs.writeFile("./data.txt",JSON.stringify(theFile),(err)=>{
+            // console.log(__dirname,"56");
+        fs.writeFile(__dirname + "/data.txt",JSON.stringify(theFile),(err)=>{
+            // console.log(req.body, typeof req.body);
+            // console.log("here2")
             if(!err) res.end();
             else res.end("error occured");
         });

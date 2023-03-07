@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const port = 3000;
 
-const server = http.createServer(function(req,res){
+const server = http.createServer( function(req,res){
     // let 
     // res.write("helloo bunty's node");
     // res.writeHead(200, {'Content-Type' : 'text/HTML'});
@@ -40,6 +40,6 @@ server.listen(port, function(error){
         console.log("something went wrong", error);
     }
     else{
-        console.log("sever is listening on port",port);
+        console.log("sever is listening on port", port);
     }
 });

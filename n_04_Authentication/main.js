@@ -11,6 +11,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.set('view engine','ejs');
 app.use(express.urlencoded({ extended:true }));
 app.use(express.json()); 
 // app.use(express.static('public'));
@@ -30,7 +31,9 @@ app.get('/home',(req,res)=>{
 
 app.get('/myAcc',(req,res)=>{
     if(req.session.is_logged_in){
-        res.sendFile(__dirname + '/public/myAcc/index.html');
+        // res.sendFile(__dirname + '/public/myAcc/index.html');
+        res.render('myacc/index',{ username: req.session.username, email:req.session.email});
+        // res.render('index');
     }else{
         res.redirect('/login');
     }
@@ -65,6 +68,8 @@ app.route('/login').get((req,res)=>{
             if(theFile[i].username === currUser.username && theFile[i].password === currUser.password){
                 flag = true;
                 req.session.is_logged_in = true;
+                req.session.username = theFile[i].username;
+                req.session.email = theFile[i].email;
                 res.redirect("/");
             }
         }

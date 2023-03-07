@@ -168,6 +168,9 @@ function addTask() {
                         rqst10.addEventListener('load',()=>{
                             console.log("res came back");
                             deleteTask(dltBtnIdNum);
+
+                            listDiv.innerHTML = "";
+                            loadData();
                         });
 
                     });
@@ -182,11 +185,7 @@ function addTask() {
                 divBtns.appendChild(b3);
                 listDiv.appendChild(div2);
                 Ids++;
-
                 eraseText();
-
-                // listDiv.innerHTML = "";
-                // loadData();
             });
         });
     }
@@ -384,6 +383,8 @@ function loadData() {
                         postRqst2.addEventListener('load', () => {
                             console.log("res cam back, 399");
                             deleteTask(dltBtnIdNum);
+                            listDiv.innerHTML = "";
+                            loadData();
                         });
 
                     });
@@ -393,6 +394,7 @@ function loadData() {
 
 
                     // deleteTask(dltBtnIdNum);
+                    
                 });
 
                 b1.innerHTML = "&#9998;";
@@ -405,6 +407,7 @@ function loadData() {
                 Ids++;
 
             }
+
             let postRqst3 = new XMLHttpRequest();
             postRqst3.open('POST', '/addData');
             postRqst3.setRequestHeader('Content-Type', "application/json");

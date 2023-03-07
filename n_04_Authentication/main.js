@@ -24,6 +24,18 @@ app.get('/',(req,res)=>{
     }
 })
 
+app.get('/home',(req,res)=>{
+    res.sendFile(__dirname + '/public/home/index.html');
+})
+
+app.get('/myAcc',(req,res)=>{
+    if(req.session.is_logged_in){
+        res.sendFile(__dirname + '/public/myAcc/index.html');
+    }else{
+        res.redirect('/login');
+    }
+})
+
 // app.get('/login',(req,res)=>{
 //     res.sendFile(__dirname + '/public/login/index.html');
 // })
@@ -60,29 +72,48 @@ app.route('/login').get((req,res)=>{
             console.log("user doesnt exit");
             res.redirect('/createAcc');
         }
-    })
-    // res.sendFile(__dirname + "/public/home/index.html");
-})
+    });
+});
 
 app.route('/signup').get((req,res)=>{
     res.sendFile(__dirname + '/public/signup/index.html');
-})
+}) // what if user already exists
 .post((req,res)=>{
-    console.log(req.body, typeof req.body,"50");
-    let theFile;
-    fs.readFile(__dirname+'/data.txt','utf-8',(err,data)=>{
-        if(data.length === 0) theFile = [];
+    console.log(req.body, typeof req.body,"82");
+    let flag2 =false;
+    // let theFile;
+    let currUser = req.body;
+    fs.readFile(__dirname +'/data.txt','utf-8',(err,data)=>{
+        let theFile;
+        if(data.length === 0){
+            theFile = [];
+        }
         else{
             theFile = JSON.parse(data);
         }
-        theFile.push(req.body);
-        fs.writeFile(__dirname + "/data.txt",JSON.stringify(theFile),(err)=>{
-            console.log("written successfully");
-        })
-    })
-    
-    res.redirect('/');
-})
+        for(let i = 0; i < theFile.length;i++){
+            if(theFile[i].username === currUser.username && theFile[i].email === currUser.email && theFile[i].password === currUser.password){
+                flag2 = true;
+                console.log("user already exists");
+                res.redirect("/");
+            }
+        }
+        if(!flag2){
+            fs.readFile(__dirname+'/data.txt','utf-8',(err,data)=>{
+                if(data.length === 0) theFile = [];
+                else{
+                    theFile = JSON.parse(data);
+                }
+                theFile.push(req.body);
+                fs.writeFile(__dirname + "/data.txt",JSON.stringify(theFile),(err)=>{
+                    console.log("written successfully");
+                });
+            });
+            res.redirect('/');
+            // res.redirect('/createAcc');
+        }
+    });
+});
 
 app.get('/createAcc',(req,res)=>{
     res.redirect('/signup');

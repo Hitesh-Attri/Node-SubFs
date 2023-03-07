@@ -1,4 +1,4 @@
-const { json } = require('express');
+// const { json } = require('express');
 let express = require('express');
 const session = require('express-session');
 let fs = require('fs');
@@ -32,7 +32,7 @@ app.get('/home',(req,res)=>{
 app.get('/myAcc',(req,res)=>{
     if(req.session.is_logged_in){
         // res.sendFile(__dirname + '/public/myAcc/index.html');
-        res.render('myacc/index',{ username: req.session.username, email:req.session.email});
+        res.render('myAcc/index',{ username: req.session.username, email:req.session.email});
         // res.render('index');
     }else{
         res.redirect('/login');
@@ -55,14 +55,16 @@ app.route('/login').get((req,res)=>{
 
     // match username from the db or here fromt the file
     let currUser = req.body;
-    fs.readFile(__dirname +'/data.txt','utf-8',(err,data)=>{
+    fs.readFile(__dirname +'/data.json','utf-8',(err,data)=>{
         let theFile;
         let flag = false;
         if(data.length === 0){
             theFile = [];
         }
         else{
+            console.log(data,typeof data);
             theFile = JSON.parse(data);
+            console.log(theFile,typeof theFile);
         }
         for(let i = 0; i < theFile.length;i++){
             if(theFile[i].username === currUser.username && theFile[i].password === currUser.password){
@@ -84,11 +86,11 @@ app.route('/signup').get((req,res)=>{
     res.sendFile(__dirname + '/public/signup/index.html');
 }) // what if user already exists
 .post((req,res)=>{
-    console.log(req.body, typeof req.body,"82");
+    console.log(req.body, typeof req.body,"87");
     let flag2 =false;
     // let theFile;
     let currUser = req.body;
-    fs.readFile(__dirname +'/data.txt','utf-8',(err,data)=>{
+    fs.readFile(__dirname +'/data.json','utf-8',(err,data)=>{
         let theFile;
         if(data.length === 0){
             theFile = [];
@@ -104,13 +106,13 @@ app.route('/signup').get((req,res)=>{
             }
         }
         if(!flag2){
-            fs.readFile(__dirname+'/data.txt','utf-8',(err,data)=>{
+            fs.readFile(__dirname+'/data.json','utf-8',(err,data)=>{
                 if(data.length === 0) theFile = [];
                 else{
                     theFile = JSON.parse(data);
                 }
                 theFile.push(req.body);
-                fs.writeFile(__dirname + "/data.txt",JSON.stringify(theFile),(err)=>{
+                fs.writeFile(__dirname + "/data.json",JSON.stringify(theFile),(err)=>{
                     console.log("written successfully");
                 });
             });

@@ -7,7 +7,19 @@ var port = 5000;
 app.use(express.json()); //A new body object containing the parsed data is populated on the request object after the middleware (i.e. req.body).
 
 const multer = require('multer');
-const upload = multer( { dest: 'images/'} )
+// const upload = multer( { dest: 'images/'} )
+
+// learn how these lines work!
+const upload = multer( {
+    storage:multer.diskStorage( {
+        destination:(req,res,cb)=>{
+            cb(null,"images")
+        },
+        filename:(req,file,cb)=>{
+            cb(null,file.fieldname + "_" + Date.now() +'.jpg')
+        }
+    })
+}).single('taskImg');
 
 app.get('/',(req,res)=>{
     res.sendFile(__dirname +"/public/index.html");
@@ -52,7 +64,12 @@ app.post('/addData',(req,res)=>{
     });
 });
 
-app.post('/pushObj',upload.single('taskImg'), (req,res)=>{
+app.post('/uploadImg', upload, (req,res)=>{
+    console.log("img here");
+    res.redirect('/');
+});
+
+app.post('/pushObj',(req,res)=>{
     // console.log(req.file);
     fs.readFile(__dirname+"/data.json",'utf-8',(err,data)=>{
         let theFile;
@@ -61,7 +78,8 @@ app.post('/pushObj',upload.single('taskImg'), (req,res)=>{
             theFile = JSON.parse(data);
         }
         theFile.push(req.body);
-        console.log(req.body, typeof req.body);
+
+        console.log(req.body, typeof req.body,"this is body");
         fs.writeFile(__dirname + "/data.json",JSON.stringify(theFile),(err)=>{
             if(!err) res.redirect('/');
             else res.end("error occured");

@@ -3,6 +3,9 @@ let area = document.getElementById("input-box");
 let submiBtn = document.getElementById("taskSubmit");
 let tasksRetrieved;
 
+// temp line
+let imgUrl = "https://media.gettyimages.com/id/83888573/photo/harry-reid-discusses-clean-energy-policies-and-ideas-at-googles-dc-office.jpg?s=1024x1024&w=gi&k=20&c=zmsm_RUHN_GRlbup9QupxG6dIHIxLXc9vSreedx1Xyc=";
+
 let Ids = 0;
 
 function eraseText() {
@@ -62,10 +65,11 @@ submiBtn.addEventListener('click',(event)=>{
         alert("Please select an image!");
     }
     else if(document.getElementById("file").value != "" && str.length != 0){
-        // document.getElementById("file").value = null;
         addTask();
+        // document.getElementById("file").value = null;
     }
     else{
+        // document.getElementById("file").value = null;
         event.preventDefault();
         console.log("in else")
     }
@@ -110,6 +114,14 @@ function loadData() {
                     pTag.style.textDecoration = "line-through";
                 }
                 div2.appendChild(pTag);
+
+                let imgTag = document.createElement("img");
+                imgTag.setAttribute('src', imgUrl);
+                imgTag.setAttribute('alt', 'task_img');
+                // imgTag.setAttribute('height', '60px');
+                // imgTag.setAttribute('width', '4.5rem');
+                imgTag.className ="task-img";
+                div2.appendChild(imgTag);
 
                 var divBtns = document.createElement('div');
                 divBtns.className = "div-btns";

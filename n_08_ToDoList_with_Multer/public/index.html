@@ -22,12 +22,12 @@
             </div>
         </div>
         <div id="text-input-div">
-            <textarea id="input-box" name="intput-box" rows="18" cols="40" placeholder="I need to..."></textarea>
             <!-- <input type="text"> -->
             <!-- <input type="submit"> -->
-            <form action="/pushObj" method="POST" enctype="multipart/form-data">
+            <form action="/uploadImg" method="POST" enctype="multipart/form-data">
+                <textarea id="input-box" name="intputbox" rows="18" cols="40" placeholder="I need to..."></textarea>
                 <input type="file" id="file" name="taskImg" accept="image/png, image/jpeg" required />
-                <button id="taskSubmit" type="submit">Submit</button>
+                <button id="taskSubmit" type="submit" >Submit</button>
             </form>
             
         </div>

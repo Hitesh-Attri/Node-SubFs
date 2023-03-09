@@ -1,5 +1,6 @@
 let listDiv = document.getElementById('list-here');
 let area = document.getElementById("input-box");
+let submiBtn = document.getElementById("taskSubmit");
 let tasksRetrieved;
 
 let Ids = 0;
@@ -15,6 +16,7 @@ function eraseText() {
 
 // make changes here such that addTask only pushes data to the server
 function addTask() {
+    // str contains the 'task' text from the text area
     let str = area.value;
 
     str = str.trim();
@@ -48,11 +50,34 @@ function addTask() {
     }
 }
 
+submiBtn.addEventListener('click',(event)=>{
+    let str = area.value;
+    str = removeExcessSpacesAndNewlines(str);
+    if (str.length == 0) {
+        event.preventDefault();
+        alert("Task can't be empty!");
+    }
+    else if (document.getElementById("file").value == "") {
+        event.preventDefault();
+        alert("Please select an image!");
+    }
+    else if(document.getElementById("file").value != "" && str.length != 0){
+        // document.getElementById("file").value = null;
+        addTask();
+    }
+    else{
+        event.preventDefault();
+        console.log("in else")
+    }
+    console.log("submit btn clicked");
+});
+
+
 area.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
         // Call your function here
-        addTask();
+        // addTask();
     }
 });
 

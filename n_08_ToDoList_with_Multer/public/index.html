@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoApp</title>
+    <link href="style.css" rel = "stylesheet">
+
+</head>
+<body>
+    <div id="main-div">
+        <div id="list-div">
+            <h2>TASK LIST</h2>
+            <p>Add tasks to your list by typing to the right and pressing enter. You may then view pending tasks below.</p>
+            <div id = "list-here">
+                <div class="list-div" id="list-div1678340369882">
+                    <p class="tasks" id="tasks1678340369882">1</p>
+                    <img src="https://media.gettyimages.com/id/83888573/photo/harry-reid-discusses-clean-energy-policies-and-ideas-at-googles-dc-office.jpg?s=1024x1024&w=gi&k=20&c=zmsm_RUHN_GRlbup9QupxG6dIHIxLXc9vSreedx1Xyc=" alt="task_img" class="task-img">
+                    <div class="div-btns" id="div-btns1678340369882"><button class="editBtn" id="editBtn1678340369882">✎</button><input type="checkbox" class="checkBtn" id="checkBtn1678340369882"><button class="deleteBtn" id="deleteBtn1678340369882">✘</button></div>
+                </div>
+            </div>
+        </div>
+        <div id="text-input-div">
+            <textarea id="input-box" name="intput-box" rows="18" cols="40" placeholder="I need to..."></textarea>
+            <!-- <input type="text"> -->
+            <!-- <input type="submit"> -->
+            <form action="/pushObj" method="POST" enctype="multipart/form-data">
+                <input type="file" id="file" name="taskImg" accept="image/png, image/jpeg" required />
+                <button id="taskSubmit" type="submit">Submit</button>
+            </form>
+            
+        </div>
+    </div>
+
+    <script src="s5_2.js"></script>
+
+</body>
+</html>

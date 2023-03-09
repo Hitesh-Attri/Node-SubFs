@@ -21,13 +21,13 @@ app.get('/',(req,res)=>{
     if(req.session.is_logged_in){
         res.sendFile(__dirname + '/public/home/index.html');
     }else{
-        res.redirect('/login');
+        res.redirect('/home');
     }
-})
+});
 
 app.get('/home',(req,res)=>{
     res.sendFile(__dirname + '/public/home/index.html');
-})
+});
 
 app.get('/myAcc',(req,res)=>{
     if(req.session.is_logged_in){
@@ -37,7 +37,7 @@ app.get('/myAcc',(req,res)=>{
     }else{
         res.redirect('/login');
     }
-})
+});
 
 // app.get('/login',(req,res)=>{
 //     res.sendFile(__dirname + '/public/login/index.html');

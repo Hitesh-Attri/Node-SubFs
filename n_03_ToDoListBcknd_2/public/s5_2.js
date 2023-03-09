@@ -39,6 +39,7 @@ function addTask() {
             rqst2.send(JSON.stringify(obj));
             // console.log(typeof tasksRetrieved, tasksRetrieved);
             rqst2.addEventListener('load', () => {
+
                 listDiv.innerHTML = "";
                 loadData();
                 eraseText();
@@ -65,7 +66,7 @@ function loadData() {
     rqst.send();
     rqst.addEventListener('load', () => {
         let tasksRetrieved = JSON.parse(rqst.responseText);
-        console.log(typeof tasksRetrieved, tasksRetrieved, "onload first");
+        // console.log(typeof tasksRetrieved, tasksRetrieved, "onload first");
         if (tasksRetrieved.length != 0) {
 
             for (let i = 0; i < tasksRetrieved.length; i++) {
@@ -97,28 +98,28 @@ function loadData() {
                 b1.className = "editBtn";
                 // let b1IdStr = `editBtn${Ids}`;
                 let b1IdStr = `editBtn${tasksRetrieved[i].id}`;
-                b1.id = b1IdStr;
+                b1.id = `editBtn${tasksRetrieved[i].id}`;
                 b1.addEventListener('click', function () {
                     let editBtnIdStr = this.id;
-                    let editBtnIdNum = parseInt(editBtnIdStr.replace("editBtn", ""));
+                    let editBtnIdNum = editBtnIdStr.replace("editBtn", "");
                     editTask(editBtnIdNum);
                 });
 
                 var b2 = document.createElement('input');
                 b2.setAttribute("type", "checkbox");
                 b2.className = "checkBtn";
-                let b2IdStr = `checkBtn${tasksRetrieved[i].id}`;
-                b2.id = b2IdStr;
+                // let b2IdStr = `checkBtn${tasksRetrieved[i].id}`;
+                b2.id = `checkBtn${tasksRetrieved[i].id}`;
                 if (tasksRetrieved[i].isCheck == 1) {
                     b2.checked = true;
                 }
                 b2.addEventListener('change', function () {
                     let checkBtnIdStr = this.id;
-                    let checkBtnIdNum = parseInt(checkBtnIdStr.replace("checkBtn", ""));
+                    let checkBtnIdNum = checkBtnIdStr.replace("checkBtn", "");
                     console.log(typeof checkBtnIdNum, checkBtnIdNum);
 
                     if (this.checked) {
-                        console.log("Checkbox is checked..");
+                        // console.log("Checkbox is checked..");
                         lineThroughTrue(checkBtnIdNum);
 
                         let rqst4 = new XMLHttpRequest();
@@ -127,33 +128,33 @@ function loadData() {
                         rqst4.addEventListener("load", () => {
                             tasksRetrieved = JSON.parse(rqst4.responseText);
                             let checkBtnIdOnListen = this.id;
-                            checkBtnIdOnListen = parseInt(checkBtnIdStr.replace("checkBtn", ""));
+                            checkBtnIdOnListen = checkBtnIdOnListen.replace("checkBtn", "");
                             tasksRetrieved[findIndex(checkBtnIdOnListen,tasksRetrieved)].isCheck = 1;
 
+                            // console.log("inside b2 if listern", this.checked, tasksRetrieved[findIndex(checkBtnIdOnListen,tasksRetrieved)].isCheck);
+                            
                             sendData(tasksRetrieved);
-
-                            console.log("inside b2 if listern", this.checked, tasksRetrieved[checkBtnIdOnListen].isCheck);
                         });
                     }
                     else {
-                        console.log("Checkbox is not checked..");
+                        // console.log("Checkbox is not checked..");
                         lineThroughFalse(checkBtnIdNum);
                         let rqst41 = new XMLHttpRequest();
                         rqst41.open("GET", "/getData");
                         rqst41.send();
                         rqst41.addEventListener("load", () => {
                             tasksRetrieved = JSON.parse(rqst41.responseText);
-                            console.log(tasksRetrieved, typeof tasksRetrieved,"324");
+                            // console.log(tasksRetrieved, typeof tasksRetrieved,"324");
                             // tasksRetrieved[i].isCheck = 1;
                             let checkBtnIdOnListen = this.id;
-                            checkBtnIdOnListen = parseInt(checkBtnIdStr.replace("checkBtn", ""));
-                            tasksRetrieved[checkBtnIdOnListen].isCheck = 0;
+                            checkBtnIdOnListen = checkBtnIdStr.replace("checkBtn", "");
+                            tasksRetrieved[findIndex(checkBtnIdOnListen,tasksRetrieved)].isCheck = 0;
 
-                            console.log(tasksRetrieved, typeof tasksRetrieved,"330");
+                            // console.log(tasksRetrieved, typeof tasksRetrieved,"330");
+
+                            // console.log("inside b2 if listern", this.checked, tasksRetrieved[findIndex(checkBtnIdOnListen,tasksRetrieved)].isCheck);
 
                             sendData(tasksRetrieved);
-
-                            console.log("inside b2 if listern", this.checked, tasksRetrieved[i].isCheck);
                         });
                     } 
                 });
@@ -164,9 +165,9 @@ function loadData() {
                 b3.id = b3IdStr;
                 b3.addEventListener('click', function () {
                     let dltBtnIdStr = this.id;
-                    console.log("on load dlt btn. idstr>", dltBtnIdStr);
+                    // console.log("on load dlt btn. listner idstr>", dltBtnIdStr, " <---");
                     let dltBtnIdNum = dltBtnIdStr.replace("deleteBtn", "");
-                    console.log(dltBtnIdNum, typeof dltBtnIdNum,"169");
+                    // console.log(dltBtnIdNum, typeof dltBtnIdNum,"170 <---");
 
                     let rqst5 = new XMLHttpRequest();
                     rqst5.open("GET", "/getData");
@@ -174,21 +175,25 @@ function loadData() {
                     rqst5.addEventListener("load", () => {
                         tasksRetrieved = JSON.parse(rqst5.responseText);
 
-                        let pTagOther = document.getElementById(`tasks${dltBtnIdNum}`);
-                        console.log(pTagOther.innerText);
-                        tasksRetrieved.splice(findIndex(`tasks${dltBtnIdNum}`, tasksRetrieved), 1);
-                        console.log(findIndex(pTagOther.innerText, tasksRetrieved, "< inside onload"));
-                        console.log(pTagOther.innerText, typeof tasksRetrieved);
+                        // let pTagOther = document.getElementById(`tasks${dltBtnIdNum}`);
+                        // console.log(pTagOther.innerText);
+                        // tasksRetrieved.splice(findIndex(`tasks${dltBtnIdNum}`, tasksRetrieved), 1);
+                        // console.log(findIndex(dltBtnIdNum, tasksRetrieved));
+                        tasksRetrieved.splice(findIndex(dltBtnIdNum, tasksRetrieved), 1);
+                        // console.log(findIndex(pTagOther.innerText, tasksRetrieved, "< inside onload"));
+                        // console.log(pTagOther.innerText, typeof tasksRetrieved);
 
                         let postRqst2 = new XMLHttpRequest();
                         postRqst2.open("POST", "/addData");
                         postRqst2.setRequestHeader("Content-Type", "application/json");
                         postRqst2.send(JSON.stringify(tasksRetrieved));
                         postRqst2.addEventListener('load', () => {
-                            console.log("res cam back, 399");
+                            // console.log("res cam back, 399");
                             deleteTask(dltBtnIdNum);
-                            listDiv.innerHTML = "";
-                            loadData();
+
+                            // ig no need to do that
+                            // listDiv.innerHTML = "";
+                            // loadData();
                         });
                     });
                 });
@@ -221,7 +226,7 @@ function lineThroughFalse(idNum) {
 }
 
 function deleteTask(idNum) {
-    console.log(idNum);
+    // console.log(idNum);
     let taskDiv = document.getElementById(`list-div${idNum}`);
     taskDiv.remove();
 
@@ -233,14 +238,14 @@ function editTask(idNum) {
     let pIdStr = `tasks${idNum}`;
 
     let rqst = new XMLHttpRequest();
-    rqst.open('GET', 'getData');
+    rqst.open('GET', '/getData');
     rqst.send();
     rqst.addEventListener('load', () => {
 
         let arr = JSON.parse(rqst.responseText);
-        console.log(arr, typeof arr, "inside edit task");
+        // console.log(arr, typeof arr, "inside edit task");
 
-        let index = findIndex(pIdStr, arr);
+        let index = findIndex(idNum, arr);
         // console.log(index);
         let pTag = document.getElementById(pIdStr);
         let newTaskStr = prompt("Edit your task > ", pTag.innerText);
@@ -252,7 +257,7 @@ function editTask(idNum) {
         } else {
             alert("Task empty!");
         }
-        console.log(arr,"line 255",typeof arr);
+        // console.log(arr,"line 255",typeof arr);
 
         sendData(arr);
     });
@@ -271,6 +276,6 @@ function sendData(data){
     request.setRequestHeader('Content-Type',"application/json");
     request.send(JSON.stringify(data));
     request.addEventListener('load', () => {
-        console.log('respnse came bck');
+        // console.log('respnse came bck');
     });
 }

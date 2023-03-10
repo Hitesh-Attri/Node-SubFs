@@ -18,7 +18,7 @@ function eraseText() {
 }
 
 // make changes here such that addTask only pushes data to the server
-function addTask() {
+function addTask(data) {
     // str contains the 'task' text from the text area
     let str = area.value;
 
@@ -28,44 +28,110 @@ function addTask() {
     if (str.length == 0) {
         alert("Task can't be empty!")
     } else {
-        let rqst = new XMLHttpRequest();
-        rqst.open('GET', "/getData");
-        rqst.send();
-        rqst.addEventListener('load', () => {
+        // let rqst = new XMLHttpRequest();
+        // rqst.open('GET', "/getData");
+        // rqst.send();
+        // rqst.addEventListener('load', () => {
+
+            
+            let ID = `${Date.now()}`;
+
+            // the image
+        //     let fileInput = document.getElementById("fileInput");
+        //     let file = fileInput.files[0];
+        //     let file2 = new File([file], `image_${ID}.jpg`);
+        //     console.log(file2, typeof file2);
+        //     let formData = new FormData();
+        //     formData.append("taskImg", file2);
+        //     console.log(formData);
+
+        //     let rqstImg = new XMLHttpRequest();
+        //     rqstImg.open('POST','/uploadImg');
+        //    // rqstImg.setRequestHeader('Content-Type','multipart/form-data');
+        //     rqstImg.send(formData);
+        //     rqstImg.addEventListener('load',(err)=>{
+        //         if(!err) console.log("image res arrival");
+        //         else console.log("error",err);
+        //     });
+
             let obj = {
                 T: str,
+                file:null,
                 isCheck: 0,
-                id: `${Date.now()}`
+                id: ID
             }
-            // POST rqst
-            let rqst2 = new XMLHttpRequest();
-            rqst2.open("POST", "/pushObj");
-            rqst2.setRequestHeader("Content-Type", "application/json");
-            rqst2.send(JSON.stringify(obj));
-            // console.log(typeof tasksRetrieved, tasksRetrieved);
-            rqst2.addEventListener('load', () => {
 
-                listDiv.innerHTML = "";
-                loadData();
-                eraseText();
+            const reqst = new XMLHttpRequest();
+            reqst.open('POST','/uploadImg');
+            reqst.send(data);
+            reqst.addEventListener('load',()=>{
+                
+                // console.log(reqst.responseText);
+                const data = JSON.parse(reqst.responseText);
+                obj.file = data.filename;
+
+                // createTask(obj);
+                // sendRequest(JSON.stringify(obj));
+
+                // POST rqst
+                let rqst2 = new XMLHttpRequest();
+                rqst2.open("POST", "/pushObj");
+                rqst2.setRequestHeader("Content-Type", "application/json");
+                rqst2.send(JSON.stringify(obj));
+                // console.log(typeof tasksRetrieved, tasksRetrieved);
+                rqst2.addEventListener('load', () => {
+
+                    listDiv.innerHTML = "";
+                    loadData();
+                    eraseText();
+                });
             });
-        });
+        // });
     }
 }
 
-submiBtn.addEventListener('click',(event)=>{
+// submiBtn.addEventListener('click',(event)=>{
+//     let str = area.value;
+//     str = removeExcessSpacesAndNewlines(str);
+//     if (str.length == 0) {
+//         event.preventDefault();
+//         alert("Task can't be empty!");
+//     }
+//     else if (document.getElementById("fileInput").value == "") {
+//         // event.preventDefault();
+//         alert("Please select an image!");
+//     }
+//     else if(document.getElementById("fileInput").value != "" && str.length != 0){
+//         addTask();
+//         document.getElementById("fileInput").value = null;
+//     }
+//     else{
+//         // document.getElementById("file").value = null;
+//         // event.preventDefault();
+//         console.log("in else")
+//     }
+//     console.log("submit btn clicked");
+// });
+
+
+const form = document.querySelector('form');
+form.addEventListener('submit',(event)=>{
+    event.preventDefault();
+    
     let str = area.value;
     str = removeExcessSpacesAndNewlines(str);
     if (str.length == 0) {
         event.preventDefault();
         alert("Task can't be empty!");
     }
-    else if (document.getElementById("file").value == "") {
+    else if (document.getElementById("fileInput").value == "") {
         event.preventDefault();
         alert("Please select an image!");
     }
-    else if(document.getElementById("file").value != "" && str.length != 0){
-        addTask();
+    else if(document.getElementById("fileInput").value != "" && str.length != 0){
+        const data = new FormData(event.target);
+        // const filename = data.get('picture');
+        addTask(data);
         // document.getElementById("file").value = null;
     }
     else{
@@ -73,6 +139,7 @@ submiBtn.addEventListener('click',(event)=>{
         event.preventDefault();
         console.log("in else")
     }
+    // event.preventDefault();
     console.log("submit btn clicked");
 });
 
@@ -116,7 +183,9 @@ function loadData() {
                 div2.appendChild(pTag);
 
                 let imgTag = document.createElement("img");
-                imgTag.setAttribute('src', imgUrl);
+                let imgName = `image_${tasksRetrieved[i].id}`; 
+                // 
+                imgTag.setAttribute('src', tasksRetrieved[i].file);
                 imgTag.setAttribute('alt', 'task_img');
                 // imgTag.setAttribute('height', '60px');
                 // imgTag.setAttribute('width', '4.5rem');
@@ -225,6 +294,18 @@ function loadData() {
                             // loadData();
                         });
                     });
+                    
+                    // let body = `image_${dltBtnIdNum}`;
+                    
+                    // let rqstDltImg = new XMLHttpRequest();
+                    // rqstDltImg.open('POST','/deleteImg');
+                    // rqstDltImg.setRequestHeader('Content-Type','application/json')
+                    // rqstDltImg.send(JSON.stringify(dltBtnIdNum));
+                    // rqstDltImg.addEventListener('load',(err)=>{
+                    //     if(!err) console.log('img deleted');
+                    //     else console.log('err',err);
+                    // })
+
                 });
 
                 b1.innerHTML = "&#9998;";

@@ -15,19 +15,20 @@
             <p>Add tasks to your list by typing to the right and pressing enter. You may then view pending tasks below.</p>
             <div id = "list-here">
                 <div class="list-div" id="list-div1678340369882">
-                    <p class="tasks" id="tasks1678340369882">1</p>
+                    <!-- <p class="tasks" id="tasks1678340369882">1</p>
                     <img src="https://media.gettyimages.com/id/83888573/photo/harry-reid-discusses-clean-energy-policies-and-ideas-at-googles-dc-office.jpg?s=1024x1024&w=gi&k=20&c=zmsm_RUHN_GRlbup9QupxG6dIHIxLXc9vSreedx1Xyc=" alt="task_img" class="task-img">
-                    <div class="div-btns" id="div-btns1678340369882"><button class="editBtn" id="editBtn1678340369882">✎</button><input type="checkbox" class="checkBtn" id="checkBtn1678340369882"><button class="deleteBtn" id="deleteBtn1678340369882">✘</button></div>
+                    <div class="div-btns" id="div-btns1678340369882"><button class="editBtn" id="editBtn1678340369882">✎</button><input type="checkbox" class="checkBtn" id="checkBtn1678340369882"><button class="deleteBtn" id="deleteBtn1678340369882">✘</button></div> -->
                 </div>
             </div>
         </div>
         <div id="text-input-div">
             <!-- <input type="text"> -->
             <!-- <input type="submit"> -->
-            <form action="/uploadImg" method="POST" enctype="multipart/form-data">
-                <textarea id="input-box" name="intputbox" rows="18" cols="40" placeholder="I need to..."></textarea>
-                <input type="file" id="file" name="taskImg" accept="image/png, image/jpeg" required />
-                <button id="taskSubmit" type="submit" >Submit</button>
+            <!-- <form action="/uploadImg" method="POST" enctype="multipart/form-data"> -->
+                <textarea id="input-box" name="intputBox" rows="18" cols="40" placeholder="I need to..."></textarea>
+            <form action="/" method="post" enctype="multipart/form-data">
+                <input type = "file" id="fileInput" name="taskImg" accept="image/png, image/jpeg" required />
+                <input type="submit" value="Submit">
             </form>
             
         </div>

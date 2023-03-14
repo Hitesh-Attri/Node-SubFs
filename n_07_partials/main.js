@@ -36,7 +36,7 @@ app.get('/myAcc',(req,res)=>{
         fs.readFile(__dirname+'/data.json','utf-8',(err,data)=>{
             if(data.length === 0) theFile =[]
             else theFile = JSON.parse(data);
-            res.render('myAcc/index',{ username: req.session.username, email:req.session.email,theFile:theFile});
+            res.render('myAcc/index',{ username: req.session.username, email:req.session.email, theFile:theFile} );
         });
         // res.render('index');
     }else{
@@ -60,6 +60,7 @@ app.route('/login').get((req,res)=>{
 
     // match username from the db or here fromt the file
     let currUser = req.body;
+    
     fs.readFile(__dirname +'/data.json','utf-8',(err,data)=>{
         let theFile;
         let flag = false;
@@ -67,11 +68,11 @@ app.route('/login').get((req,res)=>{
             theFile = [];
         }
         else{
-            console.log(data,typeof data);
+            // console.log(data,typeof data);
             theFile = JSON.parse(data);
-            console.log(theFile,typeof theFile);
+            // console.log(theFile,typeof theFile);
         }
-        for(let i = 0; i < theFile.length;i++){
+        for(let i = 0; i < theFile.length; i++){
             if(theFile[i].username === currUser.username && theFile[i].password === currUser.password){
                 flag = true;
                 req.session.is_logged_in = true;
@@ -91,8 +92,8 @@ app.route('/signup').get((req,res)=>{
     res.sendFile(__dirname + '/public/signup/index.html');
 }) // what if user already exists
 .post((req,res)=>{
-    console.log(req.body, typeof req.body,"87");
-    let flag2 =false;
+    console.log(req.body, typeof req.body,"95");
+    let flag2 = false;
     // let theFile;
     let currUser = req.body;
     fs.readFile(__dirname +'/data.json','utf-8',(err,data)=>{

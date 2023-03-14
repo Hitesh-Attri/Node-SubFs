@@ -27,13 +27,7 @@ function addTask(data) {
 
     if (str.length == 0) {
         alert("Task can't be empty!")
-    } else {
-        // let rqst = new XMLHttpRequest();
-        // rqst.open('GET', "/getData");
-        // rqst.send();
-        // rqst.addEventListener('load', () => {
-
-            
+    } else {  
             let ID = `${Date.now()}`;
 
             // the image
@@ -86,7 +80,6 @@ function addTask(data) {
                     eraseText();
                 });
             });
-        // });
     }
 }
 
@@ -183,12 +176,9 @@ function loadData() {
                 div2.appendChild(pTag);
 
                 let imgTag = document.createElement("img");
-                let imgName = `image_${tasksRetrieved[i].id}`; 
                 // 
                 imgTag.setAttribute('src', tasksRetrieved[i].file);
                 imgTag.setAttribute('alt', 'task_img');
-                // imgTag.setAttribute('height', '60px');
-                // imgTag.setAttribute('width', '4.5rem');
                 imgTag.className ="task-img";
                 div2.appendChild(imgTag);
 
@@ -288,24 +278,8 @@ function loadData() {
                         postRqst2.addEventListener('load', () => {
                             // console.log("res cam back, 399");
                             deleteTask(dltBtnIdNum);
-
-                            // ig no need to do that
-                            // listDiv.innerHTML = "";
-                            // loadData();
                         });
                     });
-                    
-                    // let body = `image_${dltBtnIdNum}`;
-                    
-                    // let rqstDltImg = new XMLHttpRequest();
-                    // rqstDltImg.open('POST','/deleteImg');
-                    // rqstDltImg.setRequestHeader('Content-Type','application/json')
-                    // rqstDltImg.send(JSON.stringify(dltBtnIdNum));
-                    // rqstDltImg.addEventListener('load',(err)=>{
-                    //     if(!err) console.log('img deleted');
-                    //     else console.log('err',err);
-                    // })
-
                 });
 
                 b1.innerHTML = "&#9998;";
@@ -338,9 +312,6 @@ function deleteTask(idNum) {
     // console.log(idNum);
     let taskDiv = document.getElementById(`list-div${idNum}`);
     taskDiv.remove();
-
-    // listDiv.innerHTML = "";
-    // loadData();
 }
 
 function editTask(idNum) {

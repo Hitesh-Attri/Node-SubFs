@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce-1-SignUp</title>
+    <link href="/style/style.css" rel="stylesheet">
+    <!-- <link href = "style.css" rel="stylesheet"> -->
+</head>
+<body>
+    <div id="main-div">
+        <% if(error){ %>
+            <div> <p style="color: rgb(77, 0, 0); font-size: 2rem;"> <%= msg %> </p></div>
+        <% } %>
+        <div id="container">
+            
+            <form method="POST" action="/signup">
+                <input class="inputs" name="username" id="username" type="text" required placeholder = "username">
+                <input class="inputs" name="email" id="email" type="email" required placeholder = "email">
+                <input class="inputs" name="password" id="password" type="password" required placeholder = "password">
+                <input class="inputs" type="submit" value="Submit">
+            </form>
+                
+                <!-- <button class="inputs" id="signUpBtn">SignUp </button> -->
+                <a href="/login"><button class="inputs" id="gotoLogin">Already A User? Login Here </button></a>
+        </div>
+    </div>
+    <!-- <script src="/script/scriptSignUp.js"></script> -->
+    <!-- <script src="scriptSignUp.js"></script> -->
+</body>
+</html>

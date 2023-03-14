@@ -72,7 +72,7 @@ app.post('/addData',(req,res)=>{
     });
 });
 
-app.post('/uploadImg',upload.single('taskImg'), (req,res)=>{
+app.post('/uploadImg', upload.single('taskImg'), (req,res)=>{
     console.log("img here");
     // res.redirect('/');
     // res.json({ success: true });

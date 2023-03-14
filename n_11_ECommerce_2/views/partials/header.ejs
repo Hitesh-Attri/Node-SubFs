@@ -1,0 +1,15 @@
+<header>
+    <div id = "header">    
+        <h2 id="logo">E-Commerce-01</h1>
+
+            <% if(loggedIn){ %>
+                <div id="user-info">
+                    <%= username %>
+                    <a class="header-logout" href="/logout"> <button>Logout</button> </a>
+                    <a class="header-logout" href="/changePass"> <button>Change Password</button> </a>
+                </div>
+            <% } %>
+
+
+    </div>
+</header>

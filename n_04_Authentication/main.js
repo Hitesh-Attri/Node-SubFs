@@ -1,4 +1,3 @@
-const { json } = require('express');
 let express = require('express');
 const session = require('express-session');
 let fs = require('fs');
@@ -32,7 +31,7 @@ app.get('/home',(req,res)=>{
 app.get('/myAcc',(req,res)=>{
     if(req.session.is_logged_in){
         // res.sendFile(__dirname + '/public/myAcc/index.html');
-        res.render('myacc/index',{ username: req.session.username, email:req.session.email});
+        res.render('myAcc/index',{ username: req.session.username, email:req.session.email});
         // res.render('index');
     }else{
         res.redirect('/login');

@@ -132,16 +132,48 @@ app.route('/signup').get((req,res)=>{
     })
 })
 
-app.get('/getProducts',(req,res)=>{
-    fs.readFile(__dirname+'/products.json','utf-8',(err,data)=>{
-        if(data.length === 0) theFile = [];
+// this route was being called only once, on the loading of the laodmore script.js. 
+/// now implementing the ajax reques for sending only limited products in a small json arr
+// app.get('/getProducts',(req,res)=>{
+//     fs.readFile( __dirname+'/products.json', 'utf-8', (err,data)=>{
+//         if(data.length === 0) theFile = [];
+//         else{
+//             theFile = JSON.parse(data);
+//             // console.log(theFile, typeof theFile,"<<");
+//         }
+//         res.json(theFile);
+//     });
+// });
+
+app.post('/getProducts',(req,res)=>{
+    // console.log(req.body, typeof req.body);
+    let i = req.body.curr;
+    console.log(i);
+    let theFile;
+    let theFile2;
+    let isEmpty;
+    fs.readFile(__dirname + '/products.json','utf-8',(err,data)=>{
+
+        if(data.length === 0) {
+            res.json({isEmpty:true, theFile2:[]});
+            theFile = [];
+        }
         else{
             theFile = JSON.parse(data);
-            // console.log(theFile, typeof theFile,"<<");
+            if( i < theFile.length ){
+                theFile2 = theFile.slice(i,i+5);
+                // isEmpty = false;
+                res.json({isEmpty:false, theFile2:theFile2});
+            }
+            else{
+                // isEmpty=true;
+                res.json({isEmpty:true, theFile2:[]});
+            }
         }
-        res.json(theFile);
+        // res.json({isEmpty:isEmpty,theFile2:theFile2});
     });
 })
+
 
 app.post('/uploadProduct',upload.single('productImage'), (req,res)=>{
     console.log("product img here");

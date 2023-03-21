@@ -1,9 +1,11 @@
 let loadMoreBtn = document.getElementById('loadMoreBtn');
-let ulList = document.getElementById('ulList');
+// let ulList = document.getElementById('ulList');
 
 console.log("sheeeeeeeeeeeeeeeeeeeesh");
 
 var curr = 5;
+let num = 5;
+let flag = true;
 let limit = 10;
 
 loadMoreBtn.addEventListener('click', () => {
@@ -20,7 +22,8 @@ loadMoreBtn.addEventListener('click', () => {
         // console.log(obj.theFile2, typeof obj.theFile2, "the products");
         
         if (obj.isEmpty) {
-            alert("no more products")
+            flag = false;
+            alert("no more products");
         }
         else {
             console.log('loop');
@@ -29,7 +32,7 @@ loadMoreBtn.addEventListener('click', () => {
 
             for (let i = 0; i < products.length; i++) {
                 // console.log(i);
-
+/*
                 let li = document.createElement('li');
                 let div = document.createElement('div');
                 let img = document.createElement('img');
@@ -41,8 +44,14 @@ loadMoreBtn.addEventListener('click', () => {
                 p.innerText = products[i].productName;
 
                 let VDbtn = document.createElement('button');
+                VDbtn.id = `viewDetailBtn-${num}`;
                 VDbtn.addEventListener('click', () => {
-                    togglePopup();
+                    // let btnID = this.id;
+                    // console.log(btnID, typeof btnID);
+                    // btnID = btnID.replace("viewDetailBtn-","");
+                    // console.log(btnID, typeof btnID);
+                    
+                    togglePopup(this.id);
                 })
                 VDbtn.innerText = "View details";
 
@@ -50,25 +59,44 @@ loadMoreBtn.addEventListener('click', () => {
                 div.appendChild(p)
                 div.appendChild(VDbtn);
 
+                let popupID = `popup-${num}`;
                 let popup = `
-                <div class="popup" id="popup-1">
+                <div class="popup" id= "${popupID}">
                 <div class="overlay"></div>
                 <div class="content">
-                    <div class="close-btn" onclick="togglePopup()">&times;</div>
+                    <div id= "close-btn${popupID}" class="close-btn" onclick="togglePopup(this.id)">&times;</div>
                         <h1>Details =></h1>    
                         <p> Product Details here!!! </p>
                         <p> Description: ${products[i].description} </p>
                         <p> Price: ${products[i].price} </p>
                     </div>
-                </div>
-            `
+                </div> `
 
                 li.innerHTML = popup;
                 li.appendChild(div);
                 ulList.appendChild(li);
                 let br = document.createElement('br');
                 ulList.appendChild(br);
+                */
 
+                
+                let t = `
+                <div class="product">
+                  <div class="text-center">
+                    <img src="${products[i].fileName}" class="img-fluid" />
+                  </div>
+                  <h6>${products[i].productName}</h6>
+                  <button id="viewDetailBtn-i" onclick="togglePopup(this.id)"> View details </button>
+                  <button id="addToCartBtn-i" onclick="addToCart(this.id)" > Add to Cart </button>
+                </div>
+                <br/> `
+
+              let div1 = document.createElement('div');
+              div1.className = "col-md-3"
+              div1.innerHTML= t;
+              document.getElementById('parDiv').appendChild(div1);
+                
+                num++;
                 if (i == products.length - 1) noMorePrdct = true;
             }
             // curr = limit;
@@ -79,7 +107,7 @@ loadMoreBtn.addEventListener('click', () => {
             }
         }
     })
-    curr = curr + 5;
+    if(flag) curr = curr + 5;
 })
 
 let form = document.querySelector('form');
@@ -98,16 +126,31 @@ form.addEventListener('submit', (event) => {
             const data = JSON.parse(reqst.responseText);
             // obj.file = data.filename;
             console.log(data);
-            console.log(data.filename);
+            // console.log(data.filename);
             form.reset();
         });
     }
 })
 
-function togglePopup() {
-    document.getElementById('popup-1').classList.toggle("active");
+function togglePopup(ID) {
+    
+    // console.log(ID,typeof ID);
+    // if(ID == "div-4"){
+    //     ID = ID.replace("div-","");
+    //     ID= "popup"+ID;
+    // }
+    // else if(ID == "viewDetailBtn-0"){
+    //     ID = ID.replace("viewDetailBtn-","");
+    //     ID= "popup-"+ID;
+    // }
+    console.log(ID,'here');
+    document.getElementById('popup1').classList.toggle("active");
 }
 
+
+function addToCart(){
+    
+}
 
 
 

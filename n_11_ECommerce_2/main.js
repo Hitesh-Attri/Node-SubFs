@@ -24,12 +24,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
 app.use(express.static('public'));
 app.use(express.static('uploads'));
+app.use('/css',express.static(__dirname+'/node_modules/bootstrap/dist/css'))
 
 app.route('/').get((req,res)=>{
     if(!req.session.is_logged_in){
         res.render('root', {loggedOut: 0, msg:""});
     }else{
-        res.redirect('/home');
+        // res.redirect('/home');
+        res.sendFile(__dirname+'/public/index.html')
     }
 })
 
@@ -80,7 +82,11 @@ app.route('/login').get((req,res)=>{
 })
 
 app.route('/signup').get((req,res)=>{
-    res.render('signup',{error:false, msg:""});
+    if(req.session.is_logged_in){
+        res.redirect('/home');
+    }else{
+        res.render('signup',{error:false, msg:""});
+    }
 })
 .post((req,res)=>{
     let flag = false;
@@ -93,7 +99,7 @@ app.route('/signup').get((req,res)=>{
             theFile = JSON.parse(data);
         }
         for(let i = 0 ; i < theFile.length;i++){
-            // ||
+            // |
             if(theFile[i].username === currUser.username && theFile[i].email === currUser.email){
                 flag = true;
                 console.log("user already exists");
@@ -120,6 +126,8 @@ app.route('/signup').get((req,res)=>{
                 theFile.push(obj);
                 fs.writeFile(__dirname + "/data.json",JSON.stringify(theFile),(err)=>{
                     console.log("written successfully");
+                    res.render('root', { loggedOut:2, msg:"You can login now!"});
+                    return;
                     sendEmail(obj.email,(err,data)=>{
                         if(!err)
                             res.render('root', { loggedOut:2, msg:"You can login now!"});
@@ -131,19 +139,6 @@ app.route('/signup').get((req,res)=>{
         }
     })
 })
-
-// this route was being called only once, on the loading of the laodmore script.js. 
-/// now implementing the ajax reques for sending only limited products in a small json arr
-// app.get('/getProducts',(req,res)=>{
-//     fs.readFile( __dirname+'/products.json', 'utf-8', (err,data)=>{
-//         if(data.length === 0) theFile = [];
-//         else{
-//             theFile = JSON.parse(data);
-//             // console.log(theFile, typeof theFile,"<<");
-//         }
-//         res.json(theFile);
-//     });
-// });
 
 app.post('/getProducts',(req,res)=>{
     // console.log(req.body, typeof req.body);
@@ -174,12 +169,15 @@ app.post('/getProducts',(req,res)=>{
     });
 })
 
-
 app.post('/uploadProduct',upload.single('productImage'), (req,res)=>{
     console.log("product img here");
+    // console.log(req.file);
+    // console.log(req.body,typeof req.body);
     let obj = {
-        productName:"Product Name",
-        fileName : req.file.filename
+        productName:req.body.productName,
+        fileName : req.file.filename,
+        description : req.body.productDesc,
+        price : req.body.productPrice
     }
     let theProducts;
     fs.readFile(__dirname +"/products.json",'utf-8',(err,data)=>{
@@ -195,41 +193,47 @@ app.post('/uploadProduct',upload.single('productImage'), (req,res)=>{
     res.send(req.file);
 })
 
-
 app.route('/changePass').get(checkAuth,(req,res)=>{
     res.render('changePass', {error:false, msg: "from get"});
 })
 .post(checkAuth,(req,res)=>{
     // console.log(req.body , typeof req.body);
     let currData = req.body;
-    currData.userEmail = currData.userEmail.trim();
+    // currData.userEmail = currData.userEmail.trim();
     currData.newPass = currData.newPass.trim();
     currData.confirmPass = currData.confirmPass.trim();
 
-    if(currData.newPass == "" || currData.confirmPass == "" || currData.userEmail==""){
+    // if(currData.newPass == "" || currData.confirmPass == "" || currData.userEmail==""){
+    if(currData.newPass == "" || currData.confirmPass == "" ){
         res.render("changePass", { error: false, msg:"field cant be empty!"});
         return;
     }
-    else if(currData.email != req.session.email){
-        res.render("changePass", { error: false, msg:"mmmmm chalaakii!. enter your own email user!"});
-    }
+    // else if(currData.email != req.session.email){
+    //     res.render("changePass", { error: false, msg:"mmmmm chalaakii!. enter your own email user!"});
+    // }
     else if(currData.newPass != currData.confirmPass){
         res.render("changePass", { error: false, msg:"Password doesn't match!"});
         return;
     }
     else{
         let theFile;
+
         fs.readFile(__dirname +"/data.json",'utf-8',(err,data)=>{
             if(data.length === 0) theFile = [];
             else{
                 theFile = JSON.parse(data);
             }
             let passChngeFlag = false;
+            console.log(currData.newPass,"<<");
             for(let i = 0 ; i < theFile.length;i++){
                 // find the user whose pass is to be changed
-                if(theFile[i].email == currData.email){
+                if(theFile[i].email == req.session.email){
                     theFile[i].password = currData.newPass;
                     passChngeFlag = true;
+
+                    fs.writeFile(__dirname+'/data.json',JSON.stringify(theFile),()=>{
+                        console.log('pass updated')
+                    })
                     break;
                 }
             }
@@ -255,6 +259,7 @@ app.get('*',(req,res)=>{
 });
 
 app.listen(port,(error)=>{
-    if(!error) console.log("main--> Server running at port,", port);
+    // if(!error) console.log("main--> Server running at port,", port);
+    if(!error) console.log(`App listening at http://localhost:${port}`)
     else console.log("Error! ", error);
 })

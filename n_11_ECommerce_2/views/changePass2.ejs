@@ -100,7 +100,7 @@
     <br />
     <br />
 
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center" id="theDiv">
       <form action="/changepass/changed" method="post">
         <div
           class="d-flex flex-column align-items-center py-2 my-3 justify-contain-center"
@@ -109,46 +109,24 @@
           <div>
             <div class="form-group">
               <label for="pass">Password </label>
-              <input
-                type="password"
-                id="psw"
-                name="password1"
-                
-                required
-              />
+              <input type="password" id="psw" name="password1" required/>
             </div>
             <div class="form-group">
               <label for="pass"> Confirm Password </label>
-            <input
-              type="password"
-              id="psw1"
-              name="password2"
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-             
-              required
-            />
+            <input type="password" id="psw1" name="password2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required />
           </div>
           </div>
           <div>
-
-            
         </div>
       </div>
-        <div
-          id="message"
-          style="display: none; position: absolute; left: 2rem; top: 3rem"
-        >
+        <div id="message" style="display: none; position: absolute; left: 2rem; top: 3rem" >
           <h3>Password must contains:</h3>
           <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-          <p id="capital" class="invalid">
-            A <b>capital (uppercase)</b> letter
-          </p>
+          <p id="capital" class="invalid"> A <b>capital (uppercase)</b> letter </p>
           <p id="number" class="invalid">A <b>number</b></p>
           <p id="length" class="invalid">Minimum <b>8 characters</b></p>
          </div>
-        <% if(err){ %>
-        <p style="color: red">Mismatch of password</p>
-        <% } %>
+        
         <button type="submit" class="btn btn-primary btn-sm">submit</button>
       </form>
     </div>
@@ -216,6 +194,7 @@
           length.classList.add("invalid");
         }
       };
+
       myInput1.onkeyup = function () {
         // Validate lowercase letters
         var lowerCaseLetters = /[a-z]/g;
@@ -255,6 +234,19 @@
           length.classList.remove("valid");
           length.classList.add("invalid");
         }
+
+        let form = document.querySelector('form');
+        form.addEventListener('submit',(event)=>{
+          event.preventDefault();
+          if(myInput.value !== myInput1){
+            let theDiv = document.getElementById('theDiv');
+            let p = document.createElement('p');
+            p.innerText ='Mismatch of password';
+            p.style.color = "red";
+            // `<p style="color: red">Mismatch of password</p>`;
+          }
+        })
+        
       };
     </script>
   </body>

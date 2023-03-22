@@ -30,9 +30,11 @@
                   <div class="text-center">
                     <img src="<%= products[i].fileName %>" class="img-fluid" />
                   </div>
-                  <h6><%= products[i].productName %></h6>
-                  <button id="viewDetailBtn-<%= i %>" onclick="togglePopup(this.id)"> View details </button>
-                  <button id="addToCartBtn-<%= i %>" onclick="addToCart(this.id)" > Add to Cart </button>
+                  <p><%= products[i].productName %></p>
+                  <div class="my-2 text center">
+                    <a href="/product/details/<%= products[i].id %>" class="btn btn-secondary btn-sm">View details</a>
+                    <a href="/product/details/<%= products[i].id %>" class="btn btn-secondary btn-sm">Add to cart </a>
+                  </div> 
                 </div>
                 <br/>
               </div>

@@ -1,5 +1,4 @@
 let loadMoreBtn = document.getElementById('loadMoreBtn');
-// let ulList = document.getElementById('ulList');
 
 console.log("sheeeeeeeeeeeeeeeeeeeesh");
 
@@ -110,7 +109,7 @@ loadMoreBtn.addEventListener('click', () => {
     if(flag) curr = curr + 5;
 })
 
-let form = document.querySelector('form');
+let form = document.querySelector('#uploadProduct');
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     if (document.getElementById('productImg').value == "") {
@@ -132,102 +131,21 @@ form.addEventListener('submit', (event) => {
     }
 })
 
-function togglePopup(ID) {
-    
-    // console.log(ID,typeof ID);
-    // if(ID == "div-4"){
-    //     ID = ID.replace("div-","");
-    //     ID= "popup"+ID;
-    // }
-    // else if(ID == "viewDetailBtn-0"){
-    //     ID = ID.replace("viewDetailBtn-","");
-    //     ID= "popup-"+ID;
-    // }
-    console.log(ID,'here');
-    document.getElementById('popup1').classList.toggle("active");
-}
+let addToCartBtnArr = document.getElementsByClassName('addToCartBtn');
+for(let i=0;i<addToCartBtnArr.length;i++){
+    addToCartBtnArr[i].addEventListener('click',(event)=>{
+        console.log("here",i,event.target.id);
+        // add to cart implement here
+        let productId = event.target.id;
 
-
-function addToCart(){
-    
-}
-
-
-
-
-
-
-/*
-let rqst = new XMLHttpRequest();
-rqst.open('GET', '/getProducts');
-rqst.send();
-rqst.addEventListener('load',()=>{
-    let products = JSON.parse(rqst.responseText);
-    let noMorePrdct = false;
-    if(products.length < 5) noMorePrdct=true;
-
-    loadMoreBtn.addEventListener('click',()=>{
-        if(noMorePrdct ){
-            alert("no more products")
-        }
-        // if(limit <= products.length){
-        else{
-            console.log('loop');
-            for(let i = curr; i < limit; i++){
-                console.log(i);
-
-                let li = document.createElement('li');
-                let div = document.createElement('div');
-                let img = document.createElement('img');
-
-                img.setAttribute('src', products[i].fileName );
-
-                // for pruduct name
-                let p = document.createElement('p');
-                p.innerText = products[i].productName;
-                
-                let VDbtn = document.createElement('button');
-                VDbtn.addEventListener('click',()=>{
-                    togglePopup();
-                })
-                VDbtn.innerText = "View details";
-
-                div.appendChild(img);
-                div.appendChild(p)
-                div.appendChild(VDbtn);
-
-                let popup = `
-                    <div class="popup" id="popup-1">
-                    <div class="overlay"></div>
-                    <div class="content">
-                        <div class="close-btn" onclick="togglePopup()">&times;</div>
-                            <h1>Details =></h1>    
-                            <p> Product Details here!!! </p>
-                            <p> Description: ${products[i].description} </p>
-                            <p> Price: ${products[i].price} </p>
-                        </div>
-                    </div>
-                `
-
-                li.innerHTML = popup;
-                li.appendChild(div);
-                ulList.appendChild(li);
-                let br = document.createElement('br');
-                ulList.appendChild(br);
-
-                if(i == products.length-1) noMorePrdct = true;
-            }
-            curr = limit;
-            limit += 5;
-            if(limit > products.length) {
-                console.log("here");
-                limit = products.length;
-            }
-        }
-        // else{
-        //     alert("no more products")
-        // }
-        
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST','/cart');
+        xhr.setRequestHeader('Content-Type','application/json');
+        xhr.send(JSON.stringify({productId:productId}));
+        xhr.addEventListener('load',()=>{
+            // console.log('xhr response >',xhr.responseText);
+            let obj = JSON.parse(xhr.responseText)
+            alert(obj.msg);
+        })
     })
-})
-*/
+}

@@ -17,6 +17,35 @@ function eraseText() {
     }
 }
 
+const form = document.querySelector('form');
+form.addEventListener('submit',(event)=>{
+    event.preventDefault();
+    
+    let str = area.value;
+    str = removeExcessSpacesAndNewlines(str);
+    if (str.length == 0) {
+        event.preventDefault();
+        alert("Task can't be empty!");
+    }
+    else if (document.getElementById("fileInput").value == "") {
+        event.preventDefault();
+        alert("Please select an image!");
+    }
+    else if(document.getElementById("fileInput").value != "" && str.length != 0){
+        const data = new FormData(event.target);
+        // const filename = data.get('picture');
+        addTask(data);
+        // document.getElementById("file").value = null;
+    }
+    else{
+        // document.getElementById("file").value = null;
+        event.preventDefault();
+        console.log("in else")
+    }
+    // event.preventDefault();
+    console.log("submit btn clicked");
+});
+
 // make changes here such that addTask only pushes data to the server
 function addTask(data) {
     // str contains the 'task' text from the text area
@@ -105,36 +134,6 @@ function addTask(data) {
 //     }
 //     console.log("submit btn clicked");
 // });
-
-
-const form = document.querySelector('form');
-form.addEventListener('submit',(event)=>{
-    event.preventDefault();
-    
-    let str = area.value;
-    str = removeExcessSpacesAndNewlines(str);
-    if (str.length == 0) {
-        event.preventDefault();
-        alert("Task can't be empty!");
-    }
-    else if (document.getElementById("fileInput").value == "") {
-        event.preventDefault();
-        alert("Please select an image!");
-    }
-    else if(document.getElementById("fileInput").value != "" && str.length != 0){
-        const data = new FormData(event.target);
-        // const filename = data.get('picture');
-        addTask(data);
-        // document.getElementById("file").value = null;
-    }
-    else{
-        // document.getElementById("file").value = null;
-        event.preventDefault();
-        console.log("in else")
-    }
-    // event.preventDefault();
-    console.log("submit btn clicked");
-});
 
 
 area.addEventListener('keydown', (event) => {

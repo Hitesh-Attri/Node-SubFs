@@ -91,3 +91,8 @@ ul {
     height: 100px;
     margin: auto;
   }
+
+  main{
+    background: url(/imgs/v960-ning-29.jpg)no-repeat;
+    background-size: cover;
+  }

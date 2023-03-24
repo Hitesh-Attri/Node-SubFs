@@ -33,44 +33,37 @@ router.post('/',(req,res)=>{
             }
         }
         if(!flag){
-            fs.readFile(__dir+'/data.json','utf-8',(err,data)=>{
-                if(data.length === 0) theFile = [];
-                else{
-                    theFile = JSON.parse(data);
-                }
+            let obj = {
+                username: req.body.username,
+                email: req.body.email,
+                password: req.body.password,
+                isVerified: false,
+                mailToken: Date.now()
+            } 
+            if(obj.username == "" || obj.email== "" || obj.password == ""){
+                res.render('signup',{error:true, msg:"All field required! nJs"});
+                return;
+            }
+            sendEmail(req, obj.mailToken, (info)=>{
+                console.log("this is sendEmail callback")
+                // console.log(info)
 
-                let obj = {
-                    username: req.body.username,
-                    email: req.body.email,
-                    password: req.body.password,
-                    isVarified: false,
-                    mailToken: Date.now()
-                }
-
-                theFile.push(obj);
-                fs.writeFile(__dir + "/data.json",JSON.stringify(theFile),(err)=>{
-                    console.log("written successfully");
-                    // res.render('root', { loggedOut:2, msg:"You can login now!"});
-                    // return;
-                    // sendEmailsMailJet(obj.email,(err,data)=>{
-                    //     if(!err)
-                    //         res.render('root', { loggedOut:2, msg:"You can login now!"});
-                    //     else
-                    //         res.render('404');
-                    // })
-                    sendEmail(req,(info)=>{
-                        // req.session.is_logged_in = true;
-                        console.log("this is callback")
-                        console.log(info)
-                        res.send(`sending mail testing, ${req.body.email}`)
-                        // res.render('root', { loggedOut:2, msg:"You can login now!"});
-                    })
+                fs.readFile(__dir+'/data.json','utf-8',(err,data)=>{
+                    if(data.length === 0) theFile = [];
+                    else theFile = JSON.parse(data);
                     
+                    theFile.push(obj);
+                    fs.writeFile(__dir + "/data.json",JSON.stringify(theFile),(err)=>{
+                        console.log("written successfully");
+                        req.session.is_logged_in = true;
+                        req.session.email = obj.email;
+                        req.session.username = obj.username;
+                        res.redirect('/home');
+                    })
                 });
             });
         }
     })
 })
-
 
 module.exports = router;

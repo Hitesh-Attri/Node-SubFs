@@ -12,26 +12,29 @@ router.use(session({
 
 router.get('/',(req,res)=>{
     if(req.session.is_logged_in) res.redirect('/home');
-    else res.render('root',{loggedOut: 0, msg:""});
+    else res.render('forgetPass');
 })
 
 router.post('/',(req,res)=>{
     let flag = false;
     let currUser = req.body;
-    
+    // console.log(currUser);
     fs.readFile(__dir+"/data.json",'utf-8',(error,data)=>{
         let theFile;
         if(data.length === 0) theFile =[];
         else theFile = JSON.parse(data);
 
         for(let i = 0 ; i < theFile.length;i++){
-            if(theFile[i].username === currUser.username && theFile[i].password === currUser.password){
+            if(theFile[i].email === currUser.email){
                 if(theFile[i].isVerified){
                     flag = true;
-                    req.session.is_logged_in = true;
-                    req.session.email = theFile[i].email;
-                    req.session.username = currUser.username;
-                    res.redirect("/home");
+                    theFile[i].password = currUser.password;
+
+                    fs.writeFile(__dir +"/data.json",JSON.stringify(theFile),(err)=>{
+                        console.log('f-p -> updated');
+                        res.render('root', { loggedOut:-1, msg:"Login with your new password"});
+                        return;
+                    })
                 }
                 else{
                     res.render('root', { loggedOut:-1, msg:"Please verify your email!"});
@@ -39,7 +42,7 @@ router.post('/',(req,res)=>{
                 }   
             }
         }
-        if(!flag) res.render('root', { loggedOut:-1, msg:"Invalid Credentials!"});
+        if(!flag) res.render('root', { loggedOut:-1, msg:"Invalid email id!"});
     })
 })
 

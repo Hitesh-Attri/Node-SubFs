@@ -30,13 +30,12 @@ const getProductDetails = (req,res)=>{
             if(!product){
                 res.send("some issue.. product id not found in productsData")
             }else{
-                console.log(product);
+                // console.log(product);
                 // rending product details page
                 res.render('productDetails', {product:product});
             }
         }
     });
-
 
     // res.send(":)")
 }

@@ -1,11 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (req, mailToken, callback)=>{
-    console.log(req.body, typeof req.body, " <<<")
-    console.log("testing sendEmail.js from export");
-
-    let userEmail = req.body.email;
-
+const sendEmail = async (userEmail)=>{
     let testAccount = await nodemailer.createTestAccount();
 
     // connect with the smtp
@@ -27,15 +22,13 @@ const sendEmail = async (req, mailToken, callback)=>{
         subject: "Testing mail", // Subject line
         text: "Hello world?", // plain text body
         html: `
-            <b>Hello world?</b> <br> ${req.body.email}
+            <b>Hi this is bunty</b> <br> 
+            ${userEmail}
             <br>
-            <a href="http://localhost:5000/verifyMail/${mailToken}" target="_blank">Click here to verify!</a>
+            Email verified.
+            <a href="http://localhost:5000/login" target="_blank">Click here to Login!</a>
         `, // html body
     });
-
-    // console.log("Message sent: %s", info.messageId);
-
-    callback(info);   
 }
 
 module.exports = sendEmail;

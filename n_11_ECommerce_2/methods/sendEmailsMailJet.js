@@ -50,3 +50,18 @@ module.exports = function (email, callback) {
         })
 
 }
+
+
+
+
+
+
+
+// res.render('root', { loggedOut:2, msg:"You can login now!"});
+                        // return;
+                        // sendEmailsMailJet(obj.email,(err,data)=>{
+                        //     if(!err)
+                        //         res.render('root', { loggedOut:2, msg:"You can login now!"});
+                        //     else
+                        //         res.render('404');
+                        // })

@@ -16,6 +16,5 @@ mongoose.connect("mongodb://127.0.0.1:27017/ECommerceMongoDB")
 //     console.log("connection done")
 
 // }).catch((err) => console.log("!connection",err))
-// mongoose.connect("mongodb+srv://hiteshattri71:HFsHsghXejD6zUQR@cluster0.aqzj5uk.mongodb.net/test");
 
 module.exports = mongoose;

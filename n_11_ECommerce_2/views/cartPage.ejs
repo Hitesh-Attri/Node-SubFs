@@ -19,7 +19,11 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h2>Product-List</h2>
+            <% if(x==0){ %>
+              <h2>Cart empty!</h2>
+            <% }else{ %>
+              <h2>Product-List</h2>
+            <% } %>
             <div class="row" id="parDiv">
               <% for(let i=0; i < x; i++){ %>
               <div class="col-md-3">

@@ -71,8 +71,10 @@ for(let i=0;i<deleteItemCartBtnArr.length;i++){
         xhr.setRequestHeader('Content-Type','application/json');
         xhr.send(JSON.stringify(obj));
         xhr.addEventListener('load',()=>{
-            // console.log('plus put xhr response >',xhr.responseText);
-            // let obj = JSON.parse(xhr.responseText);
+            console.log('delete xhr response >',xhr.responseText);
+            let obj = JSON.parse(xhr.responseText);
+            if(obj.success) location.reload();
+            else alert(obj.msg)
 
         })
     })

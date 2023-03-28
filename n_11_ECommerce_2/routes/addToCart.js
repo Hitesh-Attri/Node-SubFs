@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const __dir = "E:\\study\\A1\\A2\\CQ\\node\\CQnodeAssignments\\n_11_ECommerce_2"
+const __dir = "E:\\study\\A1\\A2\\CQ\\node\\CQnodeAssignments\\n_11_ECommerce_2";
 
 // router.use(express.json());
 
@@ -73,7 +73,9 @@ router.put('/',(req,res)=>{
         for(let i=0; i < theCartFile.length;i++){
             if(theCartFile[i].id == req.body.productId){
                 if(req.body.isPlus) theCartFile[i].quantity++;
-                else theCartFile[i].quantity--;
+                else {
+                    if(theCartFile[i].quantity>1) theCartFile[i].quantity--;
+                }
                 quantity = theCartFile[i].quantity;
                 break;
             }
@@ -101,18 +103,20 @@ router.delete('/',(req,res)=>{
         for(let i=0; i < theCartFile.length;i++){
             if(theCartFile[i].id == req.body.productId){
                 theCartFile.splice(i,1);
+                console.log("splice")
                 break;
             }
         }
 
         fs.writeFile(__dir+"/cart.json",JSON.stringify(theCartFile),(err)=>{
-            if(err) res.send("error in writing cart.json")
-            else res.json({msg:'cart delete req'})
+            if(err) res.json({msg:"error in writing cart.json",success:false})
+            else res.json({msg:'cart delete req',success:true})
+            // res.redirect('/cart')
             return;
         })
     })
 
-    res.send('cart delete req')
+    // res.send('cart delete req')
 })
 
 module.exports = router;

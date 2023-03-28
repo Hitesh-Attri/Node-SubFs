@@ -10,7 +10,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/ECommerceMongoDB")
 })
 
 // this part is working, cloud db
-// let DB = "mongodb+srv://hiteshattri71:eCommMongoose@cluster0.ognqxek.mongodb.net/test";
+// let DB = require('./methods/utils);
 // mongoose.connect(DB)
 // .then( ()=>{
 //     console.log("connection done")
